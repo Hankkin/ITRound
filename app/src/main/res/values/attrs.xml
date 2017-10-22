@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="NavigationTabStrip">
+        <attr name="nts_color" format="color"/>
+        <attr name="nts_size" format="dimension"/>
+        <attr name="nts_weight" format="dimension"/>
+        <attr name="nts_factor" format="float"/>
+        <attr name="nts_titles" format="reference"/>
+
+        <attr name="nts_type" format="enum">
+            <enum name="line" value="0"/>
+            <enum name="point" value="1"/>
+        </attr>
+        <attr name="nts_gravity" format="enum">
+            <enum name="bottom" value="0"/>
+            <enum name="top" value="1"/>
+        </attr>
+
+        <attr name="nts_typeface" format="string"/>
+        <attr name="nts_corners_radius" format="dimension"/>
+        <attr name="nts_animation_duration" format="integer"/>
+
+        <attr name="nts_inactive_color" format="color"/>
+        <attr name="nts_active_color" format="color"/>
+    </declare-styleable>
+
+    <declare-styleable name="CodeView">
+        <attr name="count" format="integer"/>
+        <attr name="line" format="integer"/>
+        <attr name="font_color" format="color|reference"/>
+        <attr name="font_size" format="dimension|reference"/>
+    </declare-styleable>
+
+    <string-array name="sex">
+        <item>男</item>
+        <item>女</item>
+    </string-array>
+
+
+    <attr name="defaultColor" format="color"></attr>
+    <attr name="cirRadius" format="dimension"></attr>
+    <attr name="cycleTime" format="integer"></attr>
+
+    <declare-styleable name="LikeView">
+        <attr name="defaultColor" />
+        <attr name="cirRadius" />
+        <attr name="cycleTime" />
+    </declare-styleable>
+</resources>

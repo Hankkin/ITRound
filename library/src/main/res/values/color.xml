@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="transparent">#00000000</color>
+    <color name="deep_transparent">#bb000000</color>
+    <color name="light_blue">#584F60</color>
+    <color name="black">#000000</color>
+    <color name="colorPrimary">#fd7722</color>
+    <color name="colorPrimaryDark">#18A55E</color>
+    <color name="white">#FFFFFF</color>
+    <color name="grey">#F0EFF5</color>
+    <color name="deep_grey">#dddddd</color>
+    <color name="blue">#33ccff</color>
+    <color name="home_tag">#9FB6CD</color>
+    <color name="dialog_guidao">#e2e7e5</color>
+
+</resources>

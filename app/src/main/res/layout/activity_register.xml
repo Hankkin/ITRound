@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:authcodeview="http://schemas.android.com/apk/res-auto"
+                xmlns:wwl="http://schemas.android.com/tools"
+                android:id="@+id/root"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/colorPrimary"
+                android:clipToPadding="true"
+                android:fitsSystemWindows="true"
+                android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/iv_reg_logo"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
+        android:layout_marginTop="40dp"
+        android:background="@null"
+        android:scaleType="centerCrop"
+        android:src="@mipmap/ic_launcher"/>
+
+    <TextView
+        android:id="@+id/tv_reg_welcome"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/iv_reg_logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/register_welcome"
+        android:textColor="@color/white"
+        android:textSize="@dimen/sp_24"/>
+
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="@dimen/dp_16"
+        android:layout_marginRight="@dimen/dp_16"
+        android:fillViewport="true"
+        android:scrollbarThumbVertical="@android:color/transparent"
+        android:scrollbars="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:background="@drawable/bg_white_top_round"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_48"
+                android:layout_marginTop="180dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/dp_16">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/dp_10"
+                    android:src="@mipmap/icon_login_tel"/>
+
+                <EditText
+                    android:id="@+id/et_reg_name"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:hint="@string/register_name_hint"
+                    android:inputType="number"
+                    android:maxLength="11"
+                    android:singleLine="true"
+                    android:text=""
+                    android:textSize="14dp"/>
+
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/grey"/>
+
+            <LinearLayout
+                android:background="@color/white"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_48"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/dp_16">
+
+                <ImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/dp_10"
+                    android:src="@mipmap/icon_reg_code"/>
+
+                <EditText
+                    android:id="@+id/et_reg_code"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:hint="@string/register_code_hint"
+                    android:maxLength="30"
+                    android:singleLine="true"
+                    android:text=""
+                    android:textSize="14dp"/>
+
+                <com.hankkin.itround.widget.CodeView
+                    android:layout_marginRight="@dimen/dp_10"
+                    android:id="@+id/codeView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    wwl:count="5"
+                    wwl:font_color="#00ff00"
+                    wwl:font_size="24sp"
+                    wwl:line="50"
+                    />
+
+            </LinearLayout>
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/grey"/>
+
+            <LinearLayout
+                android:background="@drawable/bg_white_bottom_round"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_48"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/dp_16">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/dp_10"
+                    android:src="@mipmap/icon_login_pwd"/>
+
+                <EditText
+                    android:inputType="textPassword"
+                    android:id="@+id/et_reg_pwd"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:hint="@string/register_pwd_hint"
+                    android:maxLength="11"
+                    android:singleLine="true"
+                    android:text=""
+                    android:textSize="14dp"/>
+
+                <ImageView
+                    android:id="@+id/iv_reg_clean_pwd"
+                    android:layout_width="40dp"
+                    android:layout_height="fill_parent"
+                    android:scaleType="centerInside"
+                    android:src="@mipmap/ic_clear"
+                    android:visibility="gone"/>
+            </LinearLayout>
+
+            <!--<View-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="1px"-->
+                <!--android:background="@color/grey"/>-->
+
+            <!--<LinearLayout-->
+                <!--android:background="@drawable/bg_white_bottom_round"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="@dimen/dp_48"-->
+                <!--android:gravity="center_vertical"-->
+                <!--android:orientation="horizontal"-->
+                <!--android:paddingLeft="@dimen/dp_16">-->
+
+                <!--<ImageView-->
+                    <!--android:id="@+id/imageView1"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginRight="@dimen/dp_10"-->
+                    <!--android:src="@mipmap/icon_reg_inviate"/>-->
+
+                <!--<EditText-->
+                    <!--android:id="@+id/et_login_pwd1"-->
+                    <!--android:layout_width="0dp"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--android:layout_weight="1"-->
+                    <!--android:background="@null"-->
+                    <!--android:hint="@string/register_inviate_hint"-->
+                    <!--android:inputType="textPassword"-->
+                    <!--android:maxLength="30"-->
+                    <!--android:singleLine="true"-->
+                    <!--android:text=""-->
+                    <!--android:textSize="14dp"/>-->
+
+                <!--<ImageView-->
+                    <!--android:id="@+id/iv_login_clear_pwd1"-->
+                    <!--android:layout_width="48dp"-->
+                    <!--android:layout_height="fill_parent"-->
+                    <!--android:scaleType="centerInside"-->
+                    <!--android:src="@mipmap/ic_clear"-->
+                    <!--android:visibility="gone"/>-->
+            <!--</LinearLayout>-->
+
+
+            <TextView
+                android:gravity="center"
+                android:id="@+id/tv_reg_reg"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="@dimen/dp_20"
+                android:background="@drawable/bg_border_white"
+                android:text="@string/register_reg"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp_18"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="@dimen/dp_10"
+                    android:id="@+id/tv_reg_login"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:layout_marginBottom="10dp"
+                    android:text="@string/register_login_now"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/sp_14"/>
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+
+</RelativeLayout>

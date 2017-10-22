@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/grey"
+    tools:context="com.hankkin.itround.ui.PersonActivity">
+
+    <include layout="@layout/layout_title_bar"/>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <RelativeLayout
+                android:background="@color/white"
+                android:paddingLeft="@dimen/dp_14"
+                android:paddingRight="@dimen/dp_14"
+                android:paddingTop="@dimen/dp_20"
+                android:paddingBottom="@dimen/dp_20"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:src="@mipmap/ic_launcher"
+                    android:id="@+id/iv_person"
+                    app:civ_border_width="1dp"
+                    app:civ_border_color="@color/colorPrimary"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"/>
+                <LinearLayout
+                    android:gravity="center_vertical"
+                    android:layout_alignBottom="@+id/iv_person"
+                    android:layout_alignTop="@+id/iv_person"
+                    android:layout_marginLeft="@dimen/dp_20"
+                    android:layout_toRightOf="@+id/iv_person"
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <LinearLayout
+                        android:gravity="center_vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:id="@+id/tv_person_name"
+                            style="@style/black_text"
+                            android:text="Hankkin"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+                        <ImageView
+                            android:id="@+id/iv_person_sex"
+                            android:layout_marginLeft="@dimen/dp_6"
+                            android:src="@mipmap/da_ren_list_boy"
+                            android:layout_width="15dp"
+                            android:layout_height="15dp"/>
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_marginTop="@dimen/dp_8"
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:id="@+id/tv_person_stars"
+                            style="@style/blacktext_smaller"
+                            android:text="28"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+                        <TextView
+                            android:textSize="@dimen/sp_14"
+                            android:layout_marginLeft="@dimen/dp_2"
+                            android:text="@string/person_star"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
+                        <TextView
+                            android:id="@+id/tv_person_followers"
+                            android:layout_marginLeft="@dimen/dp_20"
+                            style="@style/blacktext_smaller"
+                            android:text="28"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+                        <TextView
+                            android:textSize="@dimen/sp_14"
+                            android:layout_marginLeft="@dimen/dp_2"
+                            android:text="@string/person_star"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tv_person_desc"
+                    android:layout_below="@+id/iv_person"
+                    android:text="将来的你一定会赶紧"
+                    android:layout_marginTop="@dimen/dp_14"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+
+            </RelativeLayout>
+
+
+
+            <com.hankkin.library.view.RippleView
+                android:layout_marginTop="@dimen/dp_20"
+                android:padding="@dimen/dp_14"
+                android:background="@color/white"
+                rv_centered="true"
+                android:id="@+id/rip_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_centerVertical="true"
+                    android:text="@string/person_name"
+                    style="@style/blacktext_small"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+
+                <TextView
+                    android:drawablePadding="@dimen/dp_8"
+                    android:drawableRight="@mipmap/right"
+                    android:id="@+id/tv_person_name_set"
+                    android:layout_alignParentRight="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            </com.hankkin.library.view.RippleView>
+
+            <include layout="@layout/layout_line"/>
+            <com.hankkin.library.view.RippleView
+                android:padding="@dimen/dp_14"
+                android:background="@color/white"
+                rv_centered="true"
+                android:id="@+id/rip_sex"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_centerVertical="true"
+                    android:text="@string/person_sex"
+                    style="@style/blacktext_small"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+
+                <TextView
+                    android:drawablePadding="@dimen/dp_8"
+                    android:drawableRight="@mipmap/right"
+                    android:id="@+id/tv_person_sex"
+                    android:layout_alignParentRight="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            </com.hankkin.library.view.RippleView>
+            <include layout="@layout/layout_line"/>
+            <com.hankkin.library.view.RippleView
+                android:padding="@dimen/dp_14"
+                android:background="@color/white"
+                rv_centered="true"
+                android:id="@+id/rip_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_centerVertical="true"
+                    android:text="@string/person_email"
+                    style="@style/blacktext_small"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+
+                <TextView
+                    android:drawablePadding="@dimen/dp_8"
+                    android:drawableRight="@mipmap/right"
+                    android:id="@+id/tv_person_email"
+                    android:layout_alignParentRight="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            </com.hankkin.library.view.RippleView>
+            <include layout="@layout/layout_line"/>
+            <com.hankkin.library.view.RippleView
+                android:padding="@dimen/dp_14"
+                android:background="@color/white"
+                rv_centered="true"
+                android:id="@+id/rip_blog"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/tv_person_blog_title"
+                    android:layout_centerVertical="true"
+                    android:text="@string/person_blog"
+                    style="@style/blacktext_small"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+
+                <TextView
+                    android:gravity="right"
+                    android:layout_marginLeft="@dimen/dp_10"
+                    android:layout_toRightOf="@+id/tv_person_blog_title"
+                    android:drawablePadding="@dimen/dp_8"
+                    android:drawableRight="@mipmap/right"
+                    android:id="@+id/tv_person_blog"
+                    android:layout_alignParentRight="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            </com.hankkin.library.view.RippleView>
+
+            <include layout="@layout/layout_line"/>
+            <com.hankkin.library.view.RippleView
+                android:padding="@dimen/dp_14"
+                android:background="@color/white"
+                rv_centered="true"
+                android:id="@+id/rip_desc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/tv_person_desc_set_title"
+                    android:layout_centerVertical="true"
+                    android:text="@string/person_desc"
+                    style="@style/blacktext_small"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+
+                <TextView
+                    android:gravity="right"
+                    android:layout_marginLeft="@dimen/dp_10"
+                    android:layout_toRightOf="@+id/tv_person_desc_set_title"
+                    android:drawablePadding="@dimen/dp_8"
+                    android:drawableRight="@mipmap/right"
+                    android:id="@+id/tv_person_desc_set"
+                    android:layout_alignParentRight="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            </com.hankkin.library.view.RippleView>
+        </LinearLayout>
+    </ScrollView>
+
+
+
+
+</LinearLayout>

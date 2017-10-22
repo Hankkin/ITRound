@@ -1,0 +1,63 @@
+apply plugin: 'com.android.application'
+apply plugin: 'com.neenbedankt.android-apt'
+
+android {
+
+    //为了解决部分第三方库重复打包了META-INF的问题
+    packagingOptions {
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
+    }
+    lintOptions {
+        abortOnError false
+    }
+
+
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
+    }
+
+    compileSdkVersion rootProject.ext.android.compileSdkVersion
+    buildToolsVersion rootProject.ext.android.buildToolsVersion
+    defaultConfig {
+        applicationId "com.hankkin.itround"
+        minSdkVersion rootProject.ext.android.minSdkVersion
+        targetSdkVersion rootProject.ext.android.targetSdkVersion
+        versionCode rootProject.ext.android.versionCode
+        versionName rootProject.ext.android.versionName
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        vectorDrawables.useSupportLibrary = true
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    apt rootProject.ext.dependencies["butterknife-apt"]
+    compile project(':library')
+    // avoscloud-sns：LeanCloud 第三方登录包
+    //首页tab
+    compile rootProject.ext.dependencies["appcompat-v7"]
+    compile rootProject.ext.dependencies["support-v4"]
+    compile rootProject.ext.dependencies["design"]
+    compile rootProject.ext.dependencies["cardview"]
+    compile rootProject.ext.dependencies["appcompat-v7"]
+    //点赞喜欢按钮
+    compile 'com.github.jd-alexander:LikeButton:0.2.3'
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    compile 'cn.leancloud.android:avoscloud-sdk:v4.5.2'
+    compile 'com.github.Andy671:Dachshund-Tab-Layout:v0.3.0'
+    compile 'com.willowtreeapps.spruce:spruce-android:1.0.1'
+    compile 'com.github.devlight:infinitecycleviewpager:1.0.2'
+    testCompile 'junit:junit:4.12'
+}
