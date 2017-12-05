@@ -7,8 +7,13 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 
+import com.github.clans.fab.FloatingActionButton;
+import com.github.clans.fab.FloatingActionMenu;
 import com.hankkin.itround.R;
+import com.hankkin.itround.event.EventMap;
+import com.hankkin.itround.ui.home.PostGankActivity;
 import com.hankkin.library.base.BaseFragment;
+import com.hankkin.library.rx.RxBus;
 import com.kekstudio.dachshundtablayout.DachshundTabLayout;
 
 import butterknife.BindView;
@@ -21,8 +26,11 @@ import static android.support.design.widget.TabLayout.MODE_SCROLLABLE;
  * Mail: 1019283569@qq.com
  */
 
-public class HomeFragment extends BaseFragment {
+public class HomeFragment extends BaseFragment{
 
+    @BindView(R.id.fab_menu_add) FloatingActionMenu fb;
+    @BindView(R.id.fab_refresh) FloatingActionButton fbRefresh;
+    @BindView(R.id.fab_write) FloatingActionButton fbWrite;
 
     public enum HomeTag{
 
@@ -67,6 +75,23 @@ public class HomeFragment extends BaseFragment {
         tabLayout.setupWithViewPager(viewPager);
         tabLayout.setTabMode(MODE_SCROLLABLE);
         viewPager.setOffscreenPageLimit(HOME_TAG.length);
+
+        fb.setClosedOnTouchOutside(true);
+
+        fbRefresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                RxBus.getDefault().post(new EventMap.RefreshHomeEvent());
+                fb.close(false);
+            }
+        });
+        fbWrite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                gotoActivity(PostGankActivity.class);
+                fb.close(false);
+            }
+        });
 
     }
 

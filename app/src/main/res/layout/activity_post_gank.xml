@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white"
+    tools:context="com.hankkin.itround.ui.home.PostGankActivity">
+
+    <include layout="@layout/layout_title_bar_right_txt" />
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="@dimen/dp_14">
+
+            <EditText
+                style="@style/postGankET"
+                android:id="@+id/et_gank_url"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@mipmap/gank_url"
+                android:hint="@string/post_gank_url" />
+
+            <include layout="@layout/layout_line"/>
+
+            <EditText
+                style="@style/postGankET"
+                android:id="@+id/et_gank_who"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@mipmap/gank_owner"
+                android:hint="@string/post_gank_who" />
+            <include layout="@layout/layout_line"/>
+
+
+            <EditText
+                android:drawableRight="@mipmap/right"
+                android:id="@+id/tv_post_type"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@mipmap/gank_type"
+                android:focusable="false"
+                style="@style/postGankET"
+                android:hint="@string/post_gank_type" />
+
+            <include layout="@layout/layout_line"/>
+
+            <EditText
+                android:id="@+id/et_gank_desc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@mipmap/gank_desc"
+                android:paddingBottom="@dimen/dp_48"
+                style="@style/postGankET"
+                android:hint="@string/post_gank_desc"
+                />
+
+
+        </LinearLayout>
+    </ScrollView>
+
+
+</LinearLayout>

@@ -12,6 +12,7 @@ import com.hankkin.itround.manage.UserManager;
 import com.hankkin.library.base.BasePresent;
 import com.hankkin.library.http.BaseObserver;
 import com.hankkin.library.http.HttpResult;
+import com.hankkin.library.utils.ToastUtils;
 
 import java.util.List;
 
@@ -64,6 +65,10 @@ public class HomeContentPresenter extends BasePresent<HomeContentView> {
             }
 
         }
+        else {
+            ToastUtils.showShortToast("请登录");
+            return;
+        }
         AVObject object = AVObject.createWithoutData("_User", UserManager.getUid());
         object.put("thumbGankIds",userBean.getThumbGankIds());
         final boolean finalIsThumb = isThumb;
@@ -93,6 +98,10 @@ public class HomeContentPresenter extends BasePresent<HomeContentView> {
                 userBean.getLikeGankIds().remove(gankId);
             }
         }
+        else {
+            ToastUtils.showShortToast("请登录");
+            return;
+        }
         AVObject object = AVObject.createWithoutData("_User", UserManager.getUid());
         object.put("likeGankIds",userBean.getLikeGankIds());
         object.saveInBackground(new SaveCallback() {
@@ -117,6 +126,10 @@ public class HomeContentPresenter extends BasePresent<HomeContentView> {
             else {
                 userBean.getCollectGankIds().add(gankId);
             }
+        }
+        else {
+            ToastUtils.showShortToast("请登录");
+            return;
         }
         AVObject object = AVObject.createWithoutData("_User", UserManager.getUid());
         object.put("collectGankIds",userBean.getCollectGankIds());

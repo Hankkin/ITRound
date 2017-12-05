@@ -37,4 +37,16 @@
         <item name="android:paddingTop">@dimen/dp_2</item>
         <item name="android:paddingBottom">@dimen/dp_2</item>
     </style>
+
+    <style name="menu_labels_style">
+        <item name="fab_colorNormal">@color/colorPrimary</item>
+        <item name="fab_colorPressed">@color/colorPrimaryDark</item>
+        <item name="fab_colorRipple">@color/colorPrimary</item>
+    </style>
+    <style name="postGankET">
+        <item name="android:layout_marginTop">@dimen/dp_14</item>
+        <item name="android:background">@null</item>
+        <item name="android:drawablePadding">@dimen/dp_10</item>
+        <item name="android:layout_marginBottom">@dimen/dp_10</item>
+    </style>
 </resources>

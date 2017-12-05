@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
-              xmlns:custom="http://schemas.android.com/tools"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical">
+                                                 xmlns:app="http://schemas.android.com/apk/res-auto"
+                                                 xmlns:custom="http://schemas.android.com/tools"
+                                                 android:layout_width="match_parent"
+                                                 android:layout_height="match_parent"
+                                                 android:fitsSystemWindows="true"
+                                                 xmlns:fab="http://schemas.android.com/apk/res-auto"
+                                                 android:orientation="vertical">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -45,5 +47,62 @@
         android:id="@+id/vp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
+
+    <com.github.clans.fab.FloatingActionMenu
+        app:layout_behavior="com.hankkin.itround.widget.ScrollAwareFABBehavior"
+        android:id="@+id/fab_menu_add"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:paddingRight="10dp"
+        android:paddingBottom="10dp"
+        android:paddingLeft="10dp"
+        fab:menu_labels_ellipsize="end"
+        fab:menu_labels_singleLine="true"
+        fab:menu_backgroundColor="#99ffffff"
+        fab:menu_colorNormal="@color/colorPrimary"
+        fab:menu_colorPressed="@color/colorPrimary"
+        fab:menu_colorRipple="@color/colorPrimaryDark"
+        fab:menu_fab_label="">
+
+        <com.github.clans.fab.FloatingActionButton
+            fab:menu_colorNormal="@color/colorPrimary"
+            fab:menu_colorPressed="@color/colorPrimary"
+            fab:menu_colorRipple="@color/colorPrimaryDark"
+            android:id="@+id/fab_fire"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/fire"
+            style="@style/menu_labels_style"
+            fab:fab_size="mini"
+            fab:fab_label="发现" />
+
+        <com.github.clans.fab.FloatingActionButton
+            fab:menu_colorNormal="@color/colorPrimary"
+            fab:menu_colorPressed="@color/colorPrimary"
+            fab:menu_colorRipple="@color/colorPrimaryDark"
+            android:id="@+id/fab_refresh"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/update"
+            style="@style/menu_labels_style"
+            fab:fab_size="mini"
+            fab:fab_label="刷新" />
+
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/fab_write"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/write"
+            fab:fab_size="mini"
+            style="@style/menu_labels_style"
+            fab:menu_colorNormal="@color/colorPrimary"
+            fab:menu_colorPressed="@color/colorPrimary"
+            fab:menu_colorRipple="@color/colorPrimaryDark"
+            fab:fab_label="新建" />
+
+    </com.github.clans.fab.FloatingActionMenu>
 
 </android.support.design.widget.CoordinatorLayout>

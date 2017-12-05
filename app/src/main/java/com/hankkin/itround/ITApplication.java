@@ -1,8 +1,11 @@
 package com.hankkin.itround;
 
 import android.app.Application;
+import android.database.sqlite.SQLiteDatabase;
 
 import com.avos.avoscloud.AVOSCloud;
+import com.hankkin.itround.greendao.dao.DaoMaster;
+import com.hankkin.itround.greendao.dao.DaoSession;
 import com.hankkin.library.utils.Utils;
 
 /**
@@ -13,6 +16,11 @@ import com.hankkin.library.utils.Utils;
 
 public class ITApplication extends Application {
     private static ITApplication application;
+    private static DaoSession daoSession;
+    private static DaoMaster.DevOpenHelper sHelper;
+    private static DaoMaster sDaoMaster;
+    private static SQLiteDatabase db;
+
 
     @Override
     public void onCreate() {
@@ -25,10 +33,26 @@ public class ITApplication extends Application {
         AVOSCloud.setDebugLogEnabled(true);
 
         Utils.init(this);
+        initDB();
     }
 
     public static ITApplication getInstance() {
         return application;
+    }
+
+    private void initDB(){
+        sHelper = new DaoMaster.DevOpenHelper(application,"it.db",null);
+        db = sHelper.getWritableDatabase();
+        sDaoMaster = new DaoMaster(db);
+        daoSession = sDaoMaster.newSession();
+    }
+
+    public static SQLiteDatabase getDb() {
+        return db;
+    }
+
+    public static DaoSession getDaoSession(){
+        return daoSession;
     }
 
 }

@@ -21,9 +21,11 @@ import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.GetCallback;
 import com.avos.avoscloud.SaveCallback;
 import com.hankkin.itround.manage.UserManager;
+import com.hankkin.itround.ui.fg.CircleFragment;
 import com.hankkin.itround.ui.fg.FindFragment;
 import com.hankkin.itround.ui.fg.HomeFragment;
 import com.hankkin.itround.ui.fg.MeFragment;
+import com.hankkin.itround.utils.BottomNavigationViewHelper;
 import com.hankkin.library.utils.ScreenUtils;
 import com.hankkin.library.utils.StatusBarUtil;
 import com.hankkin.library.utils.ToastUtils;
@@ -42,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
 
     private HomeFragment homeFragment;
     private FindFragment findFragment;
+    private CircleFragment circleFragment;
     private MeFragment meFragment;
 
     private boolean clickMe = false;
@@ -63,12 +66,19 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.navigation_dashboard:
                     clickMe = true;
 
-
                     if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) {
                         vp.setPadding(0, 0, 0, 0);
                     }
                     StatusBarUtil.setTransparentForImageViewInFragment(MainActivity.this, null);
                     vp.setCurrentItem(1);
+                    return true;
+                case R.id.navigation_circle:
+                    if (clickMe){
+                        vp.setPadding(0, 0, 0, 0);
+                        resetFragmentView(circleFragment);
+                        StatusBarUtil.setColor(MainActivity.this, getResources().getColor(R.color.colorPrimary), 0);
+                    }
+                    vp.setCurrentItem(2);
                     return true;
                 case R.id.navigation_notifications:
                     if (clickMe){
@@ -76,9 +86,12 @@ public class MainActivity extends AppCompatActivity {
                         resetFragmentView(meFragment);
                         StatusBarUtil.setColor(MainActivity.this, getResources().getColor(R.color.colorPrimary), 0);
                     }
-                    vp.setCurrentItem(2);
+                    vp.setCurrentItem(3);
 
                     return true;
+                    default:
+                        break;
+
             }
             return false;
         }
@@ -93,17 +106,19 @@ public class MainActivity extends AppCompatActivity {
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-
+        BottomNavigationViewHelper.disableShiftMode(navigation);
 
         homeFragment = HomeFragment.newInstance(0);
         findFragment = FindFragment.newInstance(1);
-        meFragment = MeFragment.newInstance(2);
+        circleFragment = CircleFragment.newInstance(2);
+        meFragment = MeFragment.newInstance(3);
         List<Fragment> fragments = new ArrayList<>();
         fragments.add(homeFragment);
         fragments.add(findFragment);
+        fragments.add(circleFragment);
         fragments.add(meFragment);
         vp.setAdapter(new MainFragmentAdapter(getSupportFragmentManager(),fragments));
-        vp.setOffscreenPageLimit(3);
+        vp.setOffscreenPageLimit(4);
 
         clickMe = true;
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) {
@@ -127,7 +142,7 @@ public class MainActivity extends AppCompatActivity {
                             UserManager.saveUser(user);
                         }
                         else {
-                            ToastUtils.showShortToast(e.getMessage());
+                            ToastUtils.showShortToast("请登录");
                         }
                     }
                 });

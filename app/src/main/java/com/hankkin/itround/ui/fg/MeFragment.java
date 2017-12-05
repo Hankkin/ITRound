@@ -220,8 +220,6 @@ public class MeFragment extends BaseFragment implements SwipeRefreshLayout.OnRef
                         }
                     }
                 });
-
-
     }
 
 

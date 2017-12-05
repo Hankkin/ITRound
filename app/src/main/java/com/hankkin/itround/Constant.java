@@ -21,4 +21,6 @@ public class Constant {
     public static final String CLOUD_APP_Key = "Mw3zBeIEpdwKYdL7GmMjIUpa";
     public static final String CLOUD_WEIBO_URL = "https://leancloud.cn/1.1/sns/callback/30lr6p195des47bi";
     public static final String CLOUD_QQ_URL = "https://leancloud.cn/1.1/sns/callback/z6mx3p4pfxq1zqi0";
+
+    public static final boolean DEBUG = true;
 }

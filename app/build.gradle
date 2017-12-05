@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.neenbedankt.android-apt'
+apply plugin: 'org.greenrobot.greendao'
 
 android {
 
@@ -36,6 +37,12 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    greendao {
+        schemaVersion 1
+        daoPackage 'com.hankkin.itround.greendao.dao'
+        targetGenDir 'src/main/java'
+    }
 }
 
 dependencies {
@@ -45,8 +52,6 @@ dependencies {
     })
     apt rootProject.ext.dependencies["butterknife-apt"]
     compile project(':library')
-    // avoscloud-sns：LeanCloud 第三方登录包
-    //首页tab
     compile rootProject.ext.dependencies["appcompat-v7"]
     compile rootProject.ext.dependencies["support-v4"]
     compile rootProject.ext.dependencies["design"]
@@ -55,9 +60,20 @@ dependencies {
     //点赞喜欢按钮
     compile 'com.github.jd-alexander:LikeButton:0.2.3'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    // avoscloud-sns：LeanCloud 第三方登录包
     compile 'cn.leancloud.android:avoscloud-sdk:v4.5.2'
+    //首页tab
     compile 'com.github.Andy671:Dachshund-Tab-Layout:v0.3.0'
     compile 'com.willowtreeapps.spruce:spruce-android:1.0.1'
     compile 'com.github.devlight:infinitecycleviewpager:1.0.2'
+    compile 'org.greenrobot:greendao:3.2.2'
+    //悬浮按钮
+    compile 'com.github.clans:fab:1.6.4'
+    //首页列表
+    compile 'com.stone.vega.library:VegaLayoutManager:1.0.2'
+    //banner
+    compile 'com.github.czy1121:bannerview:1.0.2'
+    //摩拜tag
+    compile 'com.itkimi.group:MobikeTags:1.0.1'
     testCompile 'junit:junit:4.12'
 }

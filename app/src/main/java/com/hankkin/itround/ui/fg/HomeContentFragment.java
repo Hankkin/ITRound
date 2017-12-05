@@ -15,9 +15,11 @@ import com.hankkin.itround.bean.GankBean;
 import com.hankkin.itround.bean.UserBean;
 import com.hankkin.itround.core.HomeContentPresenter;
 import com.hankkin.itround.core.HomeContentView;
+import com.hankkin.itround.event.EventMap;
 import com.hankkin.itround.manage.UserManager;
 import com.hankkin.itround.ui.other.WebActivity;
 import com.hankkin.library.base.MvpFragment;
+import com.hankkin.library.rx.RxBus;
 import com.hankkin.library.utils.GlideUtils;
 import com.hankkin.library.utils.ToastUtils;
 import com.hankkin.library.view.CustomLoadMoreView;
@@ -29,6 +31,7 @@ import com.like.OnLikeListener;
 import java.util.List;
 
 import butterknife.BindView;
+import io.reactivex.functions.Consumer;
 
 /**
  * Created by hankkin on 2017/10/11.
@@ -39,9 +42,6 @@ import butterknife.BindView;
 public class HomeContentFragment extends MvpFragment<HomeContentView,HomeContentPresenter> implements
         SwipeRefreshLayout.OnRefreshListener,
         BaseQuickAdapter.RequestLoadMoreListener, HomeContentView{
-
-
-
 
 
 
@@ -65,6 +65,7 @@ public class HomeContentFragment extends MvpFragment<HomeContentView,HomeContent
     @Override
     protected void initViewsAndEvents(View view) {
         index = getArguments().getInt("index");
+        operateBus();
     }
 
     @Override
@@ -95,6 +96,27 @@ public class HomeContentFragment extends MvpFragment<HomeContentView,HomeContent
         });
 
         getPresenter().getGankHttp(Constant.REFRESH,HomeFragment.HOME_TAG[index],page);
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+            }
+        }).start();
+    }
+
+    public void operateBus(){
+        RxBus.getDefault().toObservable(EventMap.BaseEvent.class)
+                .subscribe(new Consumer<EventMap.BaseEvent>() {
+                    @Override
+                    public void accept(EventMap.BaseEvent event) throws Exception {
+                        if (event instanceof EventMap.RefreshHomeEvent){
+                            refreshLayout.setRefreshing(true);
+                            onRefresh();
+                        }
+
+                    }
+                });
     }
 
     @Override
@@ -181,7 +203,6 @@ public class HomeContentFragment extends MvpFragment<HomeContentView,HomeContent
         }
     }
 
-
     private class HomeContentAdapter extends BaseQuickAdapter<GankBean,BaseViewHolder>{
 
         UserBean userBean = UserManager.getInstance().getUserBean();
@@ -229,7 +250,7 @@ public class HomeContentFragment extends MvpFragment<HomeContentView,HomeContent
             btnLike.setOnLikeListener(new OnLikeListener() {
                 @Override
                 public void liked(LikeButton likeButton) {
-                    getPresenter().likeGank(item.get_id(),true);
+                        getPresenter().likeGank(item.get_id(),true);
                 }
 
                 @Override

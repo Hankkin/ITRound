@@ -10,6 +10,10 @@
         android:id="@+id/navigation_dashboard"
         android:icon="@drawable/found_selector"
         android:title="@string/title_dashboard"/>
+    <item
+        android:id="@+id/navigation_circle"
+        android:icon="@drawable/circle_selector"
+        android:title="@string/title_circle"/>
 
     <item
         android:id="@+id/navigation_notifications"

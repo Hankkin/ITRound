@@ -1,6 +1,12 @@
 package com.hankkin.itround.bean;
 
+import com.hankkin.itround.db.StringConverter;
 import com.hankkin.library.bean.BaseBean;
+
+import org.greenrobot.greendao.annotation.Convert;
+import org.greenrobot.greendao.annotation.Entity;
+import org.greenrobot.greendao.annotation.Generated;
+import org.greenrobot.greendao.annotation.Property;
 
 import java.util.List;
 
@@ -10,6 +16,7 @@ import java.util.List;
  * Mail: 1019283569@qq.com
  */
 
+@Entity(nameInDb = "gankbean")
 public class GankBean extends BaseBean {
 
     /**
@@ -25,19 +32,59 @@ public class GankBean extends BaseBean {
      * who : 代码家
      */
 
+
+    @Property(nameInDb = "_id")
     private String _id;
+
+    @Property(nameInDb = "createdAt")
     private String createdAt;
+
+    @Property(nameInDb = "desc")
     private String desc;
+
+    @Property(nameInDb = "publishedAt")
     private String publishedAt;
+
+    @Property(nameInDb = "source")
     private String source;
+
+    @Property(nameInDb = "type")
     private String type;
+
+    @Property(nameInDb = "url")
     private String url;
+
+    @Property(nameInDb = "used")
     private boolean used;
+
+    @Property(nameInDb = "who")
     private String who;
+
+    @Convert(columnType = String.class,converter = StringConverter.class)
     private List<String> images;
 
+    @Generated(hash = 423726535)
+    public GankBean(String _id, String createdAt, String desc, String publishedAt,
+            String source, String type, String url, boolean used, String who,
+            List<String> images) {
+        this._id = _id;
+        this.createdAt = createdAt;
+        this.desc = desc;
+        this.publishedAt = publishedAt;
+        this.source = source;
+        this.type = type;
+        this.url = url;
+        this.used = used;
+        this.who = who;
+        this.images = images;
+    }
+
+    @Generated(hash = 1453199415)
+    public GankBean() {
+    }
+
     public String get_id() {
-        return _id;
+        return this._id;
     }
 
     public void set_id(String _id) {
@@ -45,7 +92,7 @@ public class GankBean extends BaseBean {
     }
 
     public String getCreatedAt() {
-        return createdAt;
+        return this.createdAt;
     }
 
     public void setCreatedAt(String createdAt) {
@@ -53,7 +100,7 @@ public class GankBean extends BaseBean {
     }
 
     public String getDesc() {
-        return desc;
+        return this.desc;
     }
 
     public void setDesc(String desc) {
@@ -61,7 +108,7 @@ public class GankBean extends BaseBean {
     }
 
     public String getPublishedAt() {
-        return publishedAt;
+        return this.publishedAt;
     }
 
     public void setPublishedAt(String publishedAt) {
@@ -69,7 +116,7 @@ public class GankBean extends BaseBean {
     }
 
     public String getSource() {
-        return source;
+        return this.source;
     }
 
     public void setSource(String source) {
@@ -77,7 +124,7 @@ public class GankBean extends BaseBean {
     }
 
     public String getType() {
-        return type;
+        return this.type;
     }
 
     public void setType(String type) {
@@ -85,15 +132,15 @@ public class GankBean extends BaseBean {
     }
 
     public String getUrl() {
-        return url;
+        return this.url;
     }
 
     public void setUrl(String url) {
         this.url = url;
     }
 
-    public boolean isUsed() {
-        return used;
+    public boolean getUsed() {
+        return this.used;
     }
 
     public void setUsed(boolean used) {
@@ -101,7 +148,7 @@ public class GankBean extends BaseBean {
     }
 
     public String getWho() {
-        return who;
+        return this.who;
     }
 
     public void setWho(String who) {
@@ -109,10 +156,11 @@ public class GankBean extends BaseBean {
     }
 
     public List<String> getImages() {
-        return images;
+        return this.images;
     }
 
     public void setImages(List<String> images) {
         this.images = images;
     }
+    
 }

@@ -14,6 +14,15 @@ public class HttpResult<T> extends BaseBean {
 
 
     private boolean error;
+    private String msg;
+
+    public String getMsg() {
+        return msg;
+    }
+
+    public void setMsg(String msg) {
+        this.msg = msg;
+    }
 
     public boolean isError() {
         return error;
