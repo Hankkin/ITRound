@@ -1,5 +1,7 @@
 package com.hankkin.itround.bean;
 
+import android.text.TextUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -109,6 +111,9 @@ public class UserBean extends BaseBean {
     }
 
     public String getName() {
+        if (TextUtils.isEmpty(name)){
+            return username;
+        }
         return name;
     }
 

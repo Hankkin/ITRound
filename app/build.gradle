@@ -20,8 +20,8 @@ android {
         }
     }
 
-    compileSdkVersion rootProject.ext.android.compileSdkVersion
-    buildToolsVersion rootProject.ext.android.buildToolsVersion
+    compileSdkVersion 25
+    buildToolsVersion '25.0.2'
     defaultConfig {
         applicationId "com.hankkin.itround"
         minSdkVersion rootProject.ext.android.minSdkVersion
@@ -75,5 +75,8 @@ dependencies {
     compile 'com.github.czy1121:bannerview:1.0.2'
     //摩拜tag
     compile 'com.itkimi.group:MobikeTags:1.0.1'
+    //果冻搜索框
+    compile 'com.github.yalantis:jellytoolbar:v1.0'
     testCompile 'junit:junit:4.12'
+    compile project(':wave')
 }

@@ -6,6 +6,8 @@
     <color name="black">#000000</color>
     <color name="colorPrimary">#fd7722</color>
     <color name="colorPrimaryDark">#18A55E</color>
+    <color name="colorStart">#FF8247</color>
+    <color name="colorEnd">#FF7256</color>
     <color name="white">#FFFFFF</color>
     <color name="grey">#F0EFF5</color>
     <color name="deep_grey">#dddddd</color>

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">IT圈</string>
+    <string name="app_name">IT家</string>
     <string name="title_home">首页</string>
     <string name="title_dashboard">发现</string>
     <string name="title_circle">圈子</string>
@@ -14,6 +14,7 @@
     <string name="me_history">阅读历史</string>
     <string name="me_feedback">意见反馈</string>
     <string name="me_share">推荐给好友</string>
+    <string name="me_game">进来玩玩</string>
     <string name="find_new_friend">新的朋友</string>
 
     <!--登录注册-->
@@ -54,4 +55,7 @@
     <string name="post_gank_who">文章提交者</string>
     <string name="post_gank_desc">请输入干货内容描述</string>
     <string name="post_gank_type">请选择干货类型</string>
+
+    <string name="circle_search">圈子</string>
+    <string name="circle_search_hint">请输入要搜索的联系人</string>
 </resources>

@@ -21,6 +21,7 @@ import com.hankkin.itround.event.EventMap;
 import com.hankkin.itround.manage.UserManager;
 import com.hankkin.itround.ui.LoginActivity;
 import com.hankkin.itround.ui.PersonActivity;
+import com.hankkin.itround.ui.me.MobikeGameActivity;
 import com.hankkin.library.base.BaseFragment;
 import com.hankkin.library.rx.RxBus;
 import com.hankkin.library.utils.GlideUtils;
@@ -59,6 +60,7 @@ public class MeFragment extends BaseFragment implements SwipeRefreshLayout.OnRef
     @BindView(R.id.scrollView) NestedScrollView scrollView;
     @BindView(R.id.rip_like) RippleView rpLike;
     @BindView(R.id.rip_share) RippleView rpShare;
+    @BindView(R.id.rip_game) RippleView rpGame;
 
 
     private UserBean userBean;
@@ -81,6 +83,7 @@ public class MeFragment extends BaseFragment implements SwipeRefreshLayout.OnRef
 
 
         rpLike.setOnRippleCompleteListener(this);
+        rpGame.setOnRippleCompleteListener(this);
         rpShare.setOnRippleCompleteListener(this);
 
 
@@ -199,6 +202,9 @@ public class MeFragment extends BaseFragment implements SwipeRefreshLayout.OnRef
             //分享
             case R.id.rip_share:
                 share();
+                break;
+            case R.id.rip_game:
+                gotoActivity(MobikeGameActivity.class);
                 break;
             default:
                 break;

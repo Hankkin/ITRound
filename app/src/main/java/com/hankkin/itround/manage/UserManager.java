@@ -3,13 +3,19 @@ package com.hankkin.itround.manage;
 import android.text.TextUtils;
 
 import com.avos.avoscloud.AVException;
+import com.avos.avoscloud.AVObject;
 import com.avos.avoscloud.AVQuery;
 import com.avos.avoscloud.AVUser;
+import com.avos.avoscloud.FindCallback;
 import com.avos.avoscloud.GetCallback;
 import com.hankkin.itround.Constant;
 import com.hankkin.itround.bean.AVObjectToModel;
 import com.hankkin.itround.bean.UserBean;
+import com.hankkin.itround.callback.FindUsersCallBack;
 import com.hankkin.library.utils.Utils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by hankkin on 2017/10/17.
@@ -72,6 +78,30 @@ public class UserManager {
             @Override
             public void done(AVUser user, AVException e) {
                 callback.done(user, e);
+            }
+        });
+    }
+
+    /**
+     * 查询所有用户
+     * @param callBack
+     */
+    public static void queryAllUser(final FindUsersCallBack callBack){
+        AVQuery<AVUser> query = new AVQuery<>("_User");
+        query.findInBackground(new FindCallback<AVUser>() {
+            @Override
+            public void done(List<AVUser> list, AVException e) {
+                if (e == null){
+                    List<UserBean> userBeanList = new ArrayList<>();
+                    for (AVUser user : list){
+                        UserBean userBean = new AVObjectToModel(user).getModel(UserBean.class);
+                        userBeanList.add(userBean);
+                    }
+                    callBack.findAllUser(userBeanList);
+                }
+                else {
+                    callBack.findFail(e.getMessage());
+                }
             }
         });
     }
