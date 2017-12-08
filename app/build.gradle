@@ -62,6 +62,8 @@ dependencies {
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     // avoscloud-sns：LeanCloud 第三方登录包
     compile 'cn.leancloud.android:avoscloud-sdk:v4.5.2'
+    // 推送与实时聊天需要的包
+    compile('cn.leancloud.android:avoscloud-push:v4.4.4@aar') { transitive = true }
     //首页tab
     compile 'com.github.Andy671:Dachshund-Tab-Layout:v0.3.0'
     compile 'com.willowtreeapps.spruce:spruce-android:1.0.1'
@@ -79,4 +81,5 @@ dependencies {
     compile 'com.github.yalantis:jellytoolbar:v1.0'
     testCompile 'junit:junit:4.12'
     compile project(':wave')
+    compile project(':leancloudchatkit')
 }

@@ -4,9 +4,12 @@ import android.app.Application;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.avos.avoscloud.AVOSCloud;
+import com.hankkin.itround.chat.CustomUserProvider;
 import com.hankkin.itround.greendao.dao.DaoMaster;
 import com.hankkin.itround.greendao.dao.DaoSession;
 import com.hankkin.library.utils.Utils;
+
+import cn.leancloud.chatkit.LCChatKit;
 
 /**
  * Created by hankkin on 2017/10/12.
@@ -31,6 +34,9 @@ public class ITApplication extends Application {
         AVOSCloud.initialize(this,Constant.CLOUD_APP_ID,Constant.CLOUD_APP_Key);
         //开启调试日志
         AVOSCloud.setDebugLogEnabled(true);
+
+        LCChatKit.getInstance().setProfileProvider(CustomUserProvider.getInstance());
+        LCChatKit.getInstance().init(this,Constant.CLOUD_APP_ID,Constant.CLOUD_APP_Key);
 
         Utils.init(this);
         initDB();

@@ -32,9 +32,7 @@ public class HomeFragment extends BaseFragment{
     @BindView(R.id.fab_refresh) FloatingActionButton fbRefresh;
     @BindView(R.id.fab_write) FloatingActionButton fbWrite;
 
-    public enum HomeTag{
 
-    }
 
 
     public static final String HOME_TAG[] = {
@@ -101,7 +99,7 @@ public class HomeFragment extends BaseFragment{
     /**
      * Created by Hankkin on 15/9/20.
      */
-    public class MainFragmentAdapter extends FragmentStatePagerAdapter {
+    public static class MainFragmentAdapter extends FragmentStatePagerAdapter {
         public MainFragmentAdapter(FragmentManager fm) {
             super(fm);
         }

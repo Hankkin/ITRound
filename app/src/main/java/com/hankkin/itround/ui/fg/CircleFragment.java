@@ -6,16 +6,23 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.view.DragEvent;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
@@ -31,7 +38,11 @@ import com.hankkin.itround.widget.PinnedHeaderDecoration;
 import com.hankkin.library.base.BaseFragment;
 import com.hankkin.library.utils.GlideUtils;
 import com.hankkin.library.utils.LogUtils;
+import com.hankkin.library.utils.ToastUtils;
 import com.hankkin.library.view.EmptyLayout;
+import com.kekstudio.dachshundtablayout.DachshundTabLayout;
+import com.kekstudio.dachshundtablayout.indicators.LineFadeIndicator;
+import com.kekstudio.dachshundtablayout.indicators.PointFadeIndicator;
 import com.like.LikeButton;
 import com.like.OnLikeListener;
 import com.mobike.library.MobikeView;
@@ -46,6 +57,9 @@ import java.util.List;
 import butterknife.BindView;
 import cc.solart.wave.WaveSideBarView;
 
+import static android.support.design.widget.TabLayout.MODE_FIXED;
+import static android.support.design.widget.TabLayout.MODE_SCROLLABLE;
+
 /**
  * Created by hankkin on 2017/10/12.
  * Blog: http://hankkin.cn
@@ -57,18 +71,21 @@ public class CircleFragment extends BaseFragment{
 
     @BindView(R.id.toolbar)
     JellyToolbar toolbar;
-    @BindView(R.id.recycler_view)
-    RecyclerView rv;
-    @BindView(R.id.side_view)
-    WaveSideBarView sideBarView;
-    @BindView(R.id.refresh)
-    SwipeRefreshLayout refreshLayout;
-    @BindView(R.id.empty)
-    EmptyLayout emptyLayout;
+    @BindView(R.id.tv_circle_title)
+    TextView tvTitle;
+
+    public static final String HOME_TAG[] = {
+            "会话",
+            "联系人",
+            };
+
+    @BindView(R.id.tab)
+    DachshundTabLayout tabLayout;
+    @BindView(R.id.vp)
+    ViewPager viewPager;
 
 
     private AppCompatEditText editText;
-    private CircleFriendAdapter adapter;
 
 
     private JellyListener jellyListener = new JellyListener() {
@@ -79,6 +96,16 @@ public class CircleFragment extends BaseFragment{
             } else {
                 editText.getText().clear();
             }
+        }
+
+        @Override
+        public void onToolbarExpandingStarted() {
+            tvTitle.setVisibility(View.GONE);
+        }
+
+        @Override
+        public void onToolbarCollapsed() {
+            tvTitle.setVisibility(View.VISIBLE);
         }
     };
 
@@ -94,19 +121,16 @@ public class CircleFragment extends BaseFragment{
     protected void initViewsAndEvents(View view) {
         toolbar.setJellyListener(jellyListener);
 
+
         editText = (AppCompatEditText) LayoutInflater.from(activity).inflate(R.layout.edit_text, null);
         editText.setBackgroundResource(R.color.transparent);
         toolbar.setContentView(editText);
-        initSwipe(refreshLayout, null);
-        rv.setLayoutManager(new LinearLayoutManager(activity));
-        final PinnedHeaderDecoration decoration = new PinnedHeaderDecoration();
-        decoration.registerTypePinnedHeader(1, new PinnedHeaderDecoration.PinnedHeaderCreator() {
-            @Override
-            public boolean create(RecyclerView parent, int adapterPosition) {
-                return true;
-            }
-        });
-        rv.addItemDecoration(decoration);
+
+        viewPager.setAdapter(new CircleMainFragmentAdapter(getChildFragmentManager()));
+        tabLayout.setupWithViewPager(viewPager);
+        tabLayout.setTabMode(MODE_FIXED);
+        tabLayout.setAnimatedIndicator(new PointFadeIndicator(tabLayout));
+        viewPager.setOffscreenPageLimit(HOME_TAG.length);
 
     }
 
@@ -118,82 +142,41 @@ public class CircleFragment extends BaseFragment{
     @Override
     protected void initData() {
 
-
-        sideBarView.setOnTouchLetterChangeListener(new WaveSideBarView.OnTouchLetterChangeListener() {
-            @Override
-            public void onLetterChange(String letter) {
-                int pos = adapter.getLetterPosition(letter);
-                if (pos != -1) {
-                    rv.scrollToPosition(pos);
-                    LinearLayoutManager mLayoutManager =
-                            (LinearLayoutManager) rv.getLayoutManager();
-                    mLayoutManager.scrollToPositionWithOffset(pos, 0);
-                }
-            }
-        });
-
-        queryUser();
-
     }
 
-    private void queryUser() {
-        UserManager.queryAllUser(new FindUsersCallBack() {
-            @Override
-            public void findAllUser(List<UserBean> data) {
-                LogUtils.e(TAG,data.size()+"");
-                Collections.sort(data, new LetterComparator());
-                adapter = new CircleFriendAdapter();
-                adapter.setNewData(data);
-                rv.setAdapter(adapter);
-                refreshLayout.setRefreshing(false);
-                refreshLayout.setEnabled(false);
-            }
 
-            @Override
-            public void findFail(String msg) {
-                refreshLayout.setRefreshing(false);
-                refreshLayout.setEnabled(false);
-            }
-        });
-    }
 
     @Override
     public void onStart() {
         super.onStart();
     }
 
-
-
-    private class CircleFriendAdapter extends BaseQuickAdapter<UserBean, BaseViewHolder> {
-
-
-        public CircleFriendAdapter() {
-            super(R.layout.adapter_circle_friend);
+    /**
+     * Created by Hankkin on 15/9/20.
+     */
+    public static class CircleMainFragmentAdapter extends FragmentStatePagerAdapter {
+        public CircleMainFragmentAdapter(FragmentManager fm) {
+            super(fm);
         }
 
         @Override
-        protected void convert(BaseViewHolder helper, final UserBean item) {
-            helper.setText(R.id.tv_adapter_cir_name, item.getName());
-            helper.setText(R.id.tv_adapter_cir_desc, item.getDesc());
-
-            if (item.getSex() == UserBean.BOY) {
-                helper.setImageResource(R.id.iv_adapter_cir_sex, R.mipmap.da_ren_list_boy);
-            } else {
-                helper.setImageResource(R.id.iv_adapter_cir_sex, R.mipmap.da_ren_list_girl);
-
+        public Fragment getItem(int i) {
+            if (i == 0){
+                return SmsFragment.newInstance(i);
             }
-            ImageView ivHeader = helper.getView(R.id.iv_cir_icon);
-            if (!TextUtils.isEmpty(item.rerturnHeaderImageUrl())) {
-                GlideUtils.loadImageView(activity, item.rerturnHeaderImageUrl(), ivHeader);
+            else {
+                return ContactFragment.newInstance(i);
             }
         }
-        public int getLetterPosition(String letter){
-            for (int i = 0 ; i < getData().size(); i++){
-                if(getData().get(i).getUsername().equals(letter)){
-                    return i;
-                }
-            }
-            return -1;
+
+        @Override
+        public int getCount() {
+            return HOME_TAG.length;
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return HOME_TAG[position];
         }
 
     }

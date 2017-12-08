@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.navigation_circle:
                     if (clickMe){
                         vp.setPadding(0, 0, 0, 0);
-                        resetFragmentView(circleFragment);
+//                        resetFragmentView(circleFragment);
                         StatusBarUtil.setColor(MainActivity.this, getResources().getColor(R.color.colorPrimary), 0);
                     }
                     vp.setCurrentItem(2);
