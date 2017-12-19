@@ -73,4 +73,7 @@ public class EventMap {
     public static class LoginEvent extends BaseEvent{}
     public static class UpdateUserEvent extends BaseEvent{}
     public static class RefreshHomeEvent extends BaseEvent{}
+    public static class InvitationEvent extends BaseEvent{}
+    public static class ContactRefreshEvent extends BaseEvent{}
+
 }

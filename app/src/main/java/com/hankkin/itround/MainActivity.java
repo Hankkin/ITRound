@@ -8,18 +8,17 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.avos.avoscloud.AVException;
-import com.avos.avoscloud.AVObject;
 import com.avos.avoscloud.AVQuery;
 import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.GetCallback;
-import com.avos.avoscloud.SaveCallback;
+import com.hankkin.itround.bean.UserBean;
+import com.hankkin.itround.chat.UserCacheUtils;
 import com.hankkin.itround.manage.UserManager;
 import com.hankkin.itround.ui.fg.CircleFragment;
 import com.hankkin.itround.ui.fg.FindFragment;
@@ -61,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
                         resetFragmentView(homeFragment);
                         StatusBarUtil.setColor(MainActivity.this, getResources().getColor(R.color.colorPrimary), 0);
                     }
-                    vp.setCurrentItem(0);
+                    vp.setCurrentItem(0,false);
                     return true;
                 case R.id.navigation_dashboard:
                     clickMe = true;
@@ -70,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
                         vp.setPadding(0, 0, 0, 0);
                     }
                     StatusBarUtil.setTransparentForImageViewInFragment(MainActivity.this, null);
-                    vp.setCurrentItem(1);
+                    vp.setCurrentItem(1,false);
                     return true;
                 case R.id.navigation_circle:
                     if (clickMe){
@@ -78,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
 //                        resetFragmentView(circleFragment);
                         StatusBarUtil.setColor(MainActivity.this, getResources().getColor(R.color.colorPrimary), 0);
                     }
-                    vp.setCurrentItem(2);
+                    vp.setCurrentItem(2,false);
                     return true;
                 case R.id.navigation_notifications:
                     if (clickMe){
@@ -86,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
                         resetFragmentView(meFragment);
                         StatusBarUtil.setColor(MainActivity.this, getResources().getColor(R.color.colorPrimary), 0);
                     }
-                    vp.setCurrentItem(3);
+                    vp.setCurrentItem(3,false);
 
                     return true;
                     default:
@@ -129,77 +128,14 @@ public class MainActivity extends AppCompatActivity {
         vp.setCurrentItem(0);
 
 
+        UserCacheUtils.cacheUser(UserBean.getCurrentUser());
         vp.setPadding(0, StatusBarUtil.getStatusBarHeight(this), 0, 0);
-
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                AVQuery<AVUser> query = new AVQuery<AVUser>("_User");
-                query.getInBackground(UserManager.getUid(), new GetCallback<AVUser>() {
-                    @Override
-                    public void done(AVUser user, AVException e) {
-                        if (e == null){
-                            UserManager.saveUser(user);
-                        }
-                        else {
-                            ToastUtils.showShortToast("请登录");
-                        }
-                    }
-                });
-            }
-        }).start();
-
-
-//        mTextMessage.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                final int count = 10;
-//                Observable.interval(0, 1, TimeUnit.SECONDS)
-//                        .take(count + 1)
-//                        .map(new Function<Long, Long>() {
-//                            @Override
-//                            public Long apply(@io.reactivex.annotations.NonNull Long aLong) throws Exception {
-//                                return count - aLong;
-//                            }
-//                        })
-//                        .observeOn(AndroidSchedulers.mainThread())
-//                        .subscribe(new Observer<Long>() {
-//                            @Override
-//                            public void onSubscribe(@io.reactivex.annotations.NonNull Disposable d) {
-//
-//                            }
-//
-//                            @Override
-//                            public void onNext(@io.reactivex.annotations.NonNull Long aLong) {
-//                                mTextMessage.setText("剩余" + aLong + "秒");
-//                            }
-//
-//                            @Override
-//                            public void onError(@io.reactivex.annotations.NonNull Throwable e) {
-//
-//                            }
-//
-//                            @Override
-//                            public void onComplete() {
-//                                mTextMessage.setText("发送验证码");
-//                            }
-//                        });
-//                ;
-//            }
-//        });
-
-
-        // 测试 SDK 是否正常工作的代码
-        AVObject testObject = new AVObject("TestObject");
-        testObject.put("words","Hello World!");
-        testObject.saveInBackground(new SaveCallback() {
-            @Override
-            public void done(AVException e) {
-                if(e == null){
-                    Log.d("saved","success!");
-                }
-            }
-        });
+        if (UserBean.getCurrentUser() == null){
+            ToastUtils.showShortToast("请登录");
+        }
+        else {
+            UserCacheUtils.cacheUser(UserBean.getCurrentUser());
+        }
     }
 
 

@@ -3,6 +3,7 @@ package com.hankkin.itround.core.login;
 import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.LogInCallback;
+import com.hankkin.itround.bean.UserBean;
 import com.hankkin.library.base.BasePresent;
 
 /**
@@ -14,9 +15,9 @@ import com.hankkin.library.base.BasePresent;
 public class LoginPresenter extends BasePresent<LoginView>{
 
     public void loginHttp(String name,String pwd){
-        AVUser.logInInBackground(name, pwd, new LogInCallback<AVUser>() {
+        UserBean.logInInBackground(name, pwd, new LogInCallback<UserBean>() {
             @Override
-            public void done(AVUser avUser, AVException e) {
+            public void done(UserBean avUser, AVException e) {
                 if (e == null){
                     getView().loginResult(avUser);
                 }
@@ -24,7 +25,7 @@ public class LoginPresenter extends BasePresent<LoginView>{
                     getView().toast(e.getMessage());
                 }
             }
-        });
+        },UserBean.class);
     }
 
 }

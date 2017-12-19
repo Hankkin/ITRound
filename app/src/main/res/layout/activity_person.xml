@@ -107,11 +107,11 @@
 
 
 
-            <com.hankkin.library.view.RippleView
+            <RelativeLayout
                 android:layout_marginTop="@dimen/dp_20"
                 android:padding="@dimen/dp_14"
-                android:background="@color/white"
-                rv_centered="true"
+                android:clickable="true"
+                android:background="@drawable/bg_normal_selector"
                 android:id="@+id/rip_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -132,13 +132,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
-            </com.hankkin.library.view.RippleView>
+            </RelativeLayout>
 
             <include layout="@layout/layout_line"/>
-            <com.hankkin.library.view.RippleView
+            <RelativeLayout
                 android:padding="@dimen/dp_14"
-                android:background="@color/white"
-                rv_centered="true"
+                android:clickable="true"
+                android:background="@drawable/bg_normal_selector"
                 android:id="@+id/rip_sex"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -159,12 +159,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
-            </com.hankkin.library.view.RippleView>
+            </RelativeLayout>
             <include layout="@layout/layout_line"/>
-            <com.hankkin.library.view.RippleView
+            <RelativeLayout
                 android:padding="@dimen/dp_14"
-                android:background="@color/white"
-                rv_centered="true"
+                android:clickable="true"
+                android:background="@drawable/bg_normal_selector"
                 android:id="@+id/rip_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -185,12 +185,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
-            </com.hankkin.library.view.RippleView>
+            </RelativeLayout>
             <include layout="@layout/layout_line"/>
-            <com.hankkin.library.view.RippleView
+            <RelativeLayout
                 android:padding="@dimen/dp_14"
-                android:background="@color/white"
-                rv_centered="true"
+                android:clickable="true"
+                android:background="@drawable/bg_normal_selector"
                 android:id="@+id/rip_blog"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -215,13 +215,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
-            </com.hankkin.library.view.RippleView>
+            </RelativeLayout>
 
             <include layout="@layout/layout_line"/>
-            <com.hankkin.library.view.RippleView
+            <RelativeLayout
                 android:padding="@dimen/dp_14"
-                android:background="@color/white"
-                rv_centered="true"
+                android:clickable="true"
+                android:background="@drawable/bg_normal_selector"
                 android:id="@+id/rip_desc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -246,7 +246,20 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
-            </com.hankkin.library.view.RippleView>
+            </RelativeLayout>
+
+            <Button
+                android:layout_marginRight="@dimen/dp_48"
+                android:layout_marginLeft="@dimen/dp_48"
+                android:visibility="gone"
+                android:id="@+id/btn_person_add_friend"
+                android:layout_marginTop="60dp"
+                android:text="@string/add_friend"
+                style="@style/white_text"
+                android:background="@drawable/bg_colorprimary_cir"
+                android:layout_gravity="center_horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_40" />
         </LinearLayout>
     </ScrollView>
 

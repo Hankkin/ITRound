@@ -15,13 +15,14 @@ import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.GetCallback;
 import com.hankkin.itround.R;
-import com.hankkin.itround.bean.AVObjectToModel;
 import com.hankkin.itround.bean.UserBean;
+import com.hankkin.itround.chat.UserCacheUtils;
 import com.hankkin.itround.event.EventMap;
 import com.hankkin.itround.manage.UserManager;
 import com.hankkin.itround.ui.LoginActivity;
 import com.hankkin.itround.ui.PersonActivity;
 import com.hankkin.itround.ui.me.MobikeGameActivity;
+import com.hankkin.itround.ui.me.SettingActivity;
 import com.hankkin.library.base.BaseFragment;
 import com.hankkin.library.rx.RxBus;
 import com.hankkin.library.utils.GlideUtils;
@@ -107,14 +108,14 @@ public class MeFragment extends BaseFragment implements SwipeRefreshLayout.OnRef
 
         if (UserManager.isLogin()){
             if (user != null){
-                if (!TextUtils.isEmpty(user.rerturnHeaderImageUrl())){
-                    GlideUtils.loadImageView(activity,user.rerturnHeaderImageUrl(),mHeadImage);
+                if (!TextUtils.isEmpty(user.getAvatarUrl())){
+                    GlideUtils.loadImageView(getActivity().getApplicationContext(),user.getAvatarUrl(),mHeadImage);
                 }
                 if (!TextUtils.isEmpty(user.getName())){
                     tvTitle.setText(user.getName());
                 }
                 else {
-                    tvTitle.setText(UserManager.readUser().getUsername());
+                    tvTitle.setText(UserBean.getCurrentUser().getUsername());
                 }
             }
         }
@@ -160,13 +161,12 @@ public class MeFragment extends BaseFragment implements SwipeRefreshLayout.OnRef
 
 
     private void refreshData(){
-        UserManager.getUserInfo(new GetCallback<AVUser>() {
+        UserManager.getUserInfo(new GetCallback<UserBean>() {
             @Override
-            public void done(AVUser user, AVException e) {
+            public void done(UserBean user, AVException e) {
                 if (e == null){
-                    UserManager.saveUser(user);
-                    userBean = new AVObjectToModel(user).getModel(UserBean.class);
-                    setHeaderViews(userBean);
+                    UserCacheUtils.cacheUser(user);
+                    setHeaderViews(user);
                 }
                 else {
                     ToastUtils.showShortToast("请登录");
@@ -180,13 +180,19 @@ public class MeFragment extends BaseFragment implements SwipeRefreshLayout.OnRef
     @OnClick(R.id.iv_head)
     void headClick(){
         if (UserManager.isLogin()){
-            gotoActivity(PersonActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putBoolean(PersonActivity.CURRENT,true);
+            gotoActivity(PersonActivity.class,false,bundle);
         }
         else {
             gotoActivity(LoginActivity.class);
         }
     }
 
+    @OnClick(R.id.tv_me_set)
+    void goSet(){
+        gotoActivity(SettingActivity.class);
+    }
 
     @Override
     public void onRefresh() {

@@ -56,6 +56,8 @@ import java.util.List;
 
 import butterknife.BindView;
 import cc.solart.wave.WaveSideBarView;
+import cn.leancloud.chatkit.activity.LCIMConversationFragment;
+import cn.leancloud.chatkit.activity.LCIMConversationListFragment;
 
 import static android.support.design.widget.TabLayout.MODE_FIXED;
 import static android.support.design.widget.TabLayout.MODE_SCROLLABLE;
@@ -162,7 +164,7 @@ public class CircleFragment extends BaseFragment{
         @Override
         public Fragment getItem(int i) {
             if (i == 0){
-                return SmsFragment.newInstance(i);
+                return new LCIMConversationListFragment();
             }
             else {
                 return ContactFragment.newInstance(i);

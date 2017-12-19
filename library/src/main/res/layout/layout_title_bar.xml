@@ -15,7 +15,7 @@
         app:contentInsetStart="0dp"
         >
 
-        <com.hankkin.library.view.ClickImageView
+        <ImageView
             android:src="@mipmap/back"
             android:id="@+id/tool_bar_back"
             android:paddingLeft="@dimen/dp_10"
@@ -31,7 +31,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            style="@style/white_text"
+            android:textSize="15sp"
+            android:textColor="@color/white"
             />
     </android.support.v7.widget.Toolbar>
 

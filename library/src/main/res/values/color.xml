@@ -13,6 +13,7 @@
     <color name="deep_grey">#dddddd</color>
     <color name="blue">#33ccff</color>
     <color name="home_tag">#9FB6CD</color>
+    <color name="bg_selector">#dcdcdc</color>
     <color name="dialog_guidao">#e2e7e5</color>
 
 </resources>

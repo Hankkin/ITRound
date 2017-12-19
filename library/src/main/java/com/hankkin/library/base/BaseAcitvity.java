@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.hankkin.library.R;
+import com.hankkin.library.utils.ToastUtils;
 import com.hankkin.library.view.ProgressDialog;
 
 import butterknife.ButterKnife;
@@ -181,6 +182,16 @@ public abstract class BaseAcitvity extends AppCompatActivity implements BaseView
     protected void back() {
         if (activity != null) {
             activity.finish();
+        }
+    }
+
+    protected boolean filterException(Exception e) {
+        if (e != null) {
+            e.printStackTrace();
+            ToastUtils.showShortToast(e.getMessage());
+            return false;
+        } else {
+            return true;
         }
     }
 }

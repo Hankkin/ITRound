@@ -46,6 +46,7 @@
         custom:ddIndicatorColor="@color/colorPrimary"
         custom:ddIndicatorHeight="6dp"
         />
+    <include layout="@layout/layout_line"/>
     <android.support.v4.view.ViewPager
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:id="@+id/vp"

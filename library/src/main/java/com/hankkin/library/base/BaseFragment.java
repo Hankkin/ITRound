@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.hankkin.library.utils.ToastUtils;
 import com.hankkin.library.view.ProgressDialog;
 
 import java.lang.reflect.Field;
@@ -174,6 +175,16 @@ public abstract class BaseFragment extends Fragment {
         startActivity(intent);
         if (isCloseCurrentActivity) {
             getActivity().finish();
+        }
+    }
+
+    protected boolean filterException(Exception e) {
+        if (e != null) {
+            e.printStackTrace();
+            ToastUtils.showShortToast(e.getMessage());
+            return false;
+        } else {
+            return true;
         }
     }
 

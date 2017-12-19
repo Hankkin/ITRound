@@ -11,9 +11,8 @@ import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 
 /**
- * @author yemao
- * @date 2017/4/9
- * @description 写自己的代码, 让别人说去吧!
+ * @author Hankkin
+ * @description
  */
 
 public abstract class BaseObserver<T> implements Observer<HttpResult<T>> {

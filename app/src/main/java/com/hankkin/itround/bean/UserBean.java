@@ -2,28 +2,41 @@ package com.hankkin.itround.bean;
 
 import android.text.TextUtils;
 
+import com.avos.avoscloud.AVClassName;
+import com.avos.avoscloud.AVException;
+import com.avos.avoscloud.AVFile;
+import com.avos.avoscloud.AVGeoPoint;
+import com.avos.avoscloud.AVInstallation;
+import com.avos.avoscloud.AVObject;
+import com.avos.avoscloud.AVQuery;
+import com.avos.avoscloud.AVUser;
+import com.avos.avoscloud.FindCallback;
+import com.avos.avoscloud.FollowCallback;
+import com.avos.avoscloud.SaveCallback;
+import com.avos.avoscloud.SignUpCallback;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by hankkin on 2017/10/18.
  * Blog: http://hankkin.cn
  * Mail: 1019283569@qq.com
  */
-
-public class UserBean extends BaseBean {
+public class UserBean extends AVUser {
 
     public static final int BOY = 0;
     public static final int GIRL = 1;
 
+    public static final String AVATAR = "avatar";
+    public static final String LOCATION = "location";
+    public static final String INSTALLATION = "installation";
+
     public UserBean(){super();}
-    private String objectId;
-    private String username;
     private String name;
     private int sex;
-    private Map<String,Object> headerImage;
-    private String email;
     private String occupation;
     private String password;
     private String blog;
@@ -33,6 +46,97 @@ public class UserBean extends BaseBean {
     private List<String> thumbGankIds = new ArrayList<>();
     private List<String> likeGankIds = new ArrayList<>();
     private List<String> collectGankIds = new ArrayList<>();
+
+
+    public static String getCurrentUserId () {
+        UserBean currentUser = getCurrentUser(UserBean.class);
+        return (null != currentUser ? currentUser.getObjectId() : null);
+    }
+
+
+    public String getAvatarUrl() {
+        AVFile avatar = getAVFile(AVATAR);
+        if (avatar != null) {
+            return avatar.getUrl();
+        } else {
+            return null;
+        }
+    }
+
+
+    public void saveAvatar(String path, final SaveCallback saveCallback) {
+        final AVFile file;
+        try {
+            file = AVFile.withAbsoluteLocalPath(getUsername(), path);
+            put(AVATAR, file);
+            file.saveInBackground(new SaveCallback() {
+                @Override
+                public void done(AVException e) {
+                    if (null == e) {
+                        saveInBackground(saveCallback);
+                    } else {
+                        if (null != saveCallback) {
+                            saveCallback.done(e);
+                        }
+                    }
+                }
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static UserBean getCurrentUser() {
+        return getCurrentUser(UserBean.class);
+    }
+
+    public void updateUserInfo() {
+        AVInstallation installation = AVInstallation.getCurrentInstallation();
+        if (installation != null) {
+            put(INSTALLATION, installation);
+            saveInBackground();
+        }
+    }
+
+    public AVGeoPoint getGeoPoint() {
+        return getAVGeoPoint(LOCATION);
+    }
+
+    public void setGeoPoint(AVGeoPoint point) {
+        put(LOCATION, point);
+    }
+
+    public static void signUpByNameAndPwd(String name, String password, SignUpCallback callback) {
+        AVUser user = new AVUser();
+        user.setUsername(name);
+        user.setPassword(password);
+        user.signUpInBackground(callback);
+    }
+
+    public void removeFriend(String friendId, final SaveCallback saveCallback) {
+        unfollowInBackground(friendId, new FollowCallback() {
+            @Override
+            public void done(AVObject object, AVException e) {
+                if (saveCallback != null) {
+                    saveCallback.done(e);
+                }
+            }
+        });
+    }
+
+    public void findFriendsWithCachePolicy(AVQuery.CachePolicy cachePolicy, FindCallback<UserBean>
+            findCallback) {
+        AVQuery<UserBean> q = null;
+        try {
+            q = followeeQuery(UserBean.class);
+        } catch (Exception e) {
+        }
+        q.setCachePolicy(cachePolicy);
+        q.setMaxCacheAge(TimeUnit.MINUTES.toMillis(1));
+        q.findInBackground(findCallback);
+    }
+
+
 
     public List<String> getThumbGankIds() {
         return thumbGankIds;
@@ -90,9 +194,6 @@ public class UserBean extends BaseBean {
         this.desc = desc;
     }
 
-    public String rerturnHeaderImageUrl(){
-        return returnImg(headerImage);
-    }
 
     public String getObjectId() {
         return objectId;
@@ -102,17 +203,11 @@ public class UserBean extends BaseBean {
         this.objectId = objectId;
     }
 
-    public String getUsername() {
-        return username;
-    }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
 
     public String getName() {
         if (TextUtils.isEmpty(name)){
-            return username;
+            return getUsername();
         }
         return name;
     }
@@ -129,21 +224,9 @@ public class UserBean extends BaseBean {
         this.sex = sex;
     }
 
-    public Map<String, Object> getHeaderImage() {
-        return headerImage;
-    }
 
-    public void setHeaderImage(Map<String, Object> headerImage) {
-        this.headerImage = headerImage;
-    }
 
-    public String getEmail() {
-        return email;
-    }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
 
     public String getOccupation() {
         return occupation;

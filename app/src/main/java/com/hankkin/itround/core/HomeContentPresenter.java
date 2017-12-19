@@ -49,7 +49,7 @@ public class HomeContentPresenter extends BasePresent<HomeContentView> {
      * 点赞干货
      */
     public void thumbGank(String gankId,boolean isThumb){
-        UserBean userBean = UserManager.getInstance().getUserBean();
+        UserBean userBean = UserBean.getCurrentUser();
         if (userBean != null){
             if (userBean.getThumbGankIds() != null){
                 if (!isThumb){
@@ -89,7 +89,7 @@ public class HomeContentPresenter extends BasePresent<HomeContentView> {
      * 喜欢干货
      */
     public void likeGank(String gankId, final boolean isLike){
-        UserBean userBean = UserManager.getInstance().getUserBean();
+        UserBean userBean = UserBean.getCurrentUser();
         if (userBean != null){
             if (isLike){
                 userBean.getLikeGankIds().add(gankId);
@@ -118,7 +118,7 @@ public class HomeContentPresenter extends BasePresent<HomeContentView> {
     }
 
     public void collectGank(String gankId, final boolean isCollect){
-        UserBean userBean = UserManager.getInstance().getUserBean();
+        UserBean userBean = UserBean.getCurrentUser();
         if (userBean != null){
             if (!isCollect){
                 userBean.getCollectGankIds().remove(gankId);

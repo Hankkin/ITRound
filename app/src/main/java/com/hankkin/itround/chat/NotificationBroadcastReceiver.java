@@ -1,0 +1,66 @@
+package com.hankkin.itround.chat;
+
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+
+
+import com.hankkin.itround.Constant;
+import com.hankkin.itround.ui.login.SplashActivity;
+
+import cn.leancloud.chatkit.LCChatKit;
+import cn.leancloud.chatkit.utils.LCIMConstants;
+
+
+/**
+ * Created by wli on 15/9/8.
+ * 因为 notification 点击时，控制权不在 app，此时如果 app 被 kill 或者上下文改变后，
+ * 有可能对 notification 的响应会做相应的变化，所以此处将所有 notification 都发送至此类，
+ * 然后由此类做分发。
+ */
+public class NotificationBroadcastReceiver extends BroadcastReceiver {
+
+  @Override
+  public void onReceive(Context context, Intent intent) {
+    if (null == LCChatKit.getInstance().getClient()) {
+      gotoLoginActivity(context);
+    } else {
+      String tag = intent.getStringExtra(Constant.NOTOFICATION_TAG);
+      if (Constant.NOTIFICATION_GROUP_CHAT.equals(tag)) {
+        //TODO 此处还要在好好测试一下
+        gotoChatActivity(context, intent);
+      } else if (Constant.NOTIFICATION_SINGLE_CHAT.equals(tag)) {
+        gotoChatActivity(context, intent);
+      } else if (Constant.NOTIFICATION_SYSTEM.equals(tag)) {
+      }
+    }
+  }
+
+  /**
+   * 如果 app 上下文已经缺失，则跳转到登陆页面，走重新登陆的流程
+   * @param context
+   */
+  private void gotoLoginActivity(Context context) {
+    Intent startActivityIntent = new Intent(context, SplashActivity.class);
+    startActivityIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+    context.startActivity(startActivityIntent);
+  }
+
+  /**
+   * 跳转至聊天页面
+   * @param context
+   * @param intent
+   */
+  private void gotoChatActivity(Context context, Intent intent) {
+//    Intent startActivityIntent = new Intent(context, ChatRoomActivity.class);
+//    startActivityIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//    if (intent.hasExtra(LCIMConstants.PEER_ID)) {
+//      startActivityIntent.putExtra(LCIMConstants.PEER_ID, intent.getStringExtra(LCIMConstants.PEER_ID));
+//    } else {
+//      startActivityIntent.putExtra(LCIMConstants.CONVERSATION_ID, intent.getStringExtra(LCIMConstants.CONVERSATION_ID));
+//    }
+//    context.startActivity(startActivityIntent);
+  }
+
+
+}

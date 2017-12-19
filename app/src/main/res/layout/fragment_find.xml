@@ -49,7 +49,7 @@
                         android:background="@color/white"
                         android:id="@+id/hicvp"
                         android:layout_width="match_parent"
-                        android:layout_height="160dp"
+                        android:layout_height="200dp"
                         app:icvp_interpolator="@android:anim/accelerate_decelerate_interpolator"
                         app:icvp_scroll_duration="250"
                         app:icvp_min_page_scale_offset="5dp"

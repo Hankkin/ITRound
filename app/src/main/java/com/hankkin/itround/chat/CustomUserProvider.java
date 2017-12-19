@@ -1,5 +1,7 @@
 package com.hankkin.itround.chat;
 
+import com.hankkin.itround.bean.UserBean;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,44 +11,26 @@ import cn.leancloud.chatkit.LCChatProfilesCallBack;
 
 public class CustomUserProvider implements LCChatProfileProvider {
 
-  private static CustomUserProvider customUserProvider;
+  private static LCChatKitUser getThirdPartUser(UserBean UserBean) {
+    return new LCChatKitUser(UserBean.getObjectId(), UserBean.getUsername(), UserBean.getAvatarUrl());
+  }
 
-  public synchronized static CustomUserProvider getInstance() {
-    if (null == customUserProvider) {
-      customUserProvider = new CustomUserProvider();
+  private static List<LCChatKitUser> getThirdPartUsers(List<UserBean> UserBeans) {
+    List<LCChatKitUser> thirdPartUsers = new ArrayList<>();
+    for (UserBean user : UserBeans) {
+      thirdPartUsers.add(getThirdPartUser(user));
     }
-    return customUserProvider;
+    return thirdPartUsers;
   }
 
-  private CustomUserProvider() {
-  }
-
-  private static List<LCChatKitUser> partUsers = new ArrayList<LCChatKitUser>();
-
-  // 此数据均为模拟数据，仅供参考
-  static {
-    partUsers.add(new LCChatKitUser("Tom", "Tom", "http://www.avatarsdb.com/avatars/tom_and_jerry2.jpg"));
-    partUsers.add(new LCChatKitUser("Jerry", "Jerry", "http://www.avatarsdb.com/avatars/jerry.jpg"));
-    partUsers.add(new LCChatKitUser("Harry", "Harry", "http://www.avatarsdb.com/avatars/young_harry.jpg"));
-    partUsers.add(new LCChatKitUser("William", "William", "http://www.avatarsdb.com/avatars/william_shakespeare.jpg"));
-    partUsers.add(new LCChatKitUser("Bob", "Bob", "http://www.avatarsdb.com/avatars/bath_bob.jpg"));
-  }
 
   @Override
-  public void fetchProfiles(List<String> list, LCChatProfilesCallBack callBack) {
-    List<LCChatKitUser> userList = new ArrayList<LCChatKitUser>();
-    for (String userId : list) {
-      for (LCChatKitUser user : partUsers) {
-        if (user.getUserId().equals(userId)) {
-          userList.add(user);
-          break;
-        }
+  public void fetchProfiles(List<String> list, final LCChatProfilesCallBack callBack) {
+    UserCacheUtils.fetchUsers(list, new UserCacheUtils.CacheUserCallback() {
+      @Override
+      public void done(List<UserBean> userList, Exception e) {
+        callBack.done(getThirdPartUsers(userList), e);
       }
-    }
-    callBack.done(userList, null);
-  }
-
-  public List<LCChatKitUser> getAllUsers() {
-    return partUsers;
+    });
   }
 }

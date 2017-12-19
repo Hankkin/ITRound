@@ -1,6 +1,7 @@
 package com.hankkin.itround.core.login;
 
 import com.avos.avoscloud.AVUser;
+import com.hankkin.itround.bean.UserBean;
 import com.hankkin.library.base.BaseView;
 
 /**
@@ -11,5 +12,5 @@ import com.hankkin.library.base.BaseView;
 
 public interface LoginView extends BaseView {
 
-    void loginResult(AVUser user);
+    void loginResult(UserBean user);
 }

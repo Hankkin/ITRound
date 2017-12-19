@@ -4,11 +4,60 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
+
+
     <com.hankkin.library.view.EmptyLayout
+        android:background="@color/white"
+        android:orientation="vertical"
         android:id="@+id/empty"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+        <LinearLayout
+            android:id="@+id/layout_new"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:orientation="horizontal">
 
+            <FrameLayout
+                android:id="@+id/frame_new"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical">
+
+                <ImageView
+                    android:scaleType="fitXY"
+                    android:layout_width="50dip"
+                    android:layout_height="50.0dip"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="6.0dip"
+                    android:padding="5dp"
+                    android:src="@mipmap/icon_new_freind" />
+
+                <ImageView
+                    android:id="@+id/iv_msg_tips"
+                    android:layout_width="@dimen/dp_10"
+                    android:layout_height="@dimen/dp_10"
+                    android:layout_gravity="top|right"
+                    android:layout_marginTop="5dp"
+                    android:src="@mipmap/common_msg_tips"
+                    android:visibility="invisible" />
+            </FrameLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/black_text"
+                android:id="@+id/tv_new_name"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1.0"
+                android:padding="5dp"
+                android:singleLine="true"
+                android:text="@string/find_new_friend"
+                />
+        </LinearLayout>
+        <include layout="@layout/layout_line"/>
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">

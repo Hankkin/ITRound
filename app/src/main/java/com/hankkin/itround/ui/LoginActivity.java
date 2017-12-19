@@ -17,8 +17,13 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.avos.avoscloud.AVUser;
+import com.avos.avoscloud.im.v2.AVIMClient;
+import com.avos.avoscloud.im.v2.AVIMException;
+import com.avos.avoscloud.im.v2.callback.AVIMClientCallback;
 import com.hankkin.itround.MainActivity;
 import com.hankkin.itround.R;
+import com.hankkin.itround.bean.UserBean;
+import com.hankkin.itround.chat.UserCacheUtils;
 import com.hankkin.itround.core.login.LoginPresenter;
 import com.hankkin.itround.core.login.LoginView;
 import com.hankkin.itround.event.EventMap;
@@ -30,6 +35,7 @@ import com.hankkin.library.utils.ToastUtils;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import cn.leancloud.chatkit.LCChatKit;
 
 public class LoginActivity extends MvpActivity<LoginView,LoginPresenter> implements LoginView {
 
@@ -241,12 +247,26 @@ public class LoginActivity extends MvpActivity<LoginView,LoginPresenter> impleme
     }
 
     @Override
-    public void loginResult(AVUser user) {
-        UserManager.saveUser(user);
-        ToastUtils.showShortToast("登录成功");
-        RxBus.getDefault().post(new EventMap.LoginEvent());
-        hideProgress();
-        gotoActivity(MainActivity.class);
+    public void loginResult(UserBean user) {
+        if (UserBean.getCurrentUser() != null){
+            UserBean.getCurrentUser().updateUserInfo();
+        }
+        UserCacheUtils.cacheUser(UserBean.getCurrentUser());
+        LCChatKit.getInstance().open(user.getObjectId(), new AVIMClientCallback() {
+            @Override
+            public void done(AVIMClient avimClient, AVIMException e) {
+                if (e == null){
+                    ToastUtils.showShortToast("登录成功");
+                }
+                else {
+                    ToastUtils.showShortToast(e.getMessage());
+                }
+                RxBus.getDefault().post(new EventMap.LoginEvent());
+                hideProgress();
+                gotoActivity(MainActivity.class);
+            }
+        });
+
     }
 
     @Override

@@ -10,12 +10,20 @@ import android.support.annotation.NonNull;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.avos.avoscloud.AVException;
+import com.avos.avoscloud.AVQuery;
+import com.avos.avoscloud.AVUser;
+import com.avos.avoscloud.FindCallback;
 import com.hankkin.itround.R;
 import com.hankkin.itround.bean.UserBean;
+import com.hankkin.itround.chat.AddRequestManager;
+import com.hankkin.itround.chat.UserCacheUtils;
 import com.hankkin.itround.core.person.PersonPresenter;
 import com.hankkin.itround.core.person.PersonView;
 import com.hankkin.itround.event.EventMap;
@@ -23,9 +31,9 @@ import com.hankkin.itround.manage.UserManager;
 import com.hankkin.library.base.MvpActivity;
 import com.hankkin.library.rx.RxBus;
 import com.hankkin.library.utils.BitmapUtils;
+import com.hankkin.library.utils.FileUtils;
 import com.hankkin.library.utils.GlideUtils;
 import com.hankkin.library.utils.ToastUtils;
-import com.hankkin.library.view.RippleView;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.tbruyelle.rxpermissions2.Permission;
 import com.tbruyelle.rxpermissions2.RxPermissions;
@@ -33,13 +41,16 @@ import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
 import com.zhihu.matisse.engine.impl.GlideEngine;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import cn.leancloud.chatkit.activity.LCIMConversationActivity;
+import cn.leancloud.chatkit.utils.LCIMConstants;
 import de.hdodenhof.circleimageview.CircleImageView;
 import io.reactivex.functions.Consumer;
 
-public class PersonActivity extends MvpActivity<PersonView,PersonPresenter> implements PersonView,RippleView.OnRippleCompleteListener{
+public class PersonActivity extends MvpActivity<PersonView, PersonPresenter> implements PersonView, View.OnClickListener {
 
     public static final String NAME = "昵称";
     public static final String SEX = "性别";
@@ -47,23 +58,48 @@ public class PersonActivity extends MvpActivity<PersonView,PersonPresenter> impl
     public static final String BLOG = "博客地址";
     public static final String DESC = "个性签名";
     public static final int REQUEST_CODE_CHOOSE = 1000;
+    public static final String CURRENT = "current";
 
-    @BindView(R.id.iv_person) CircleImageView ivHeader;
-    @BindView(R.id.tv_person_name) TextView tvName;
-    @BindView(R.id.tv_person_name_set) TextView tvNameSet;
-    @BindView(R.id.iv_person_sex) ImageView ivSex;
-    @BindView(R.id.tv_person_stars) TextView tvStars;
-    @BindView(R.id.tv_person_followers) TextView tvFollowers;
-    @BindView(R.id.tv_person_desc) TextView tvDesc;
-    @BindView(R.id.tv_person_desc_set) TextView tvDescSet;
-    @BindView(R.id.tv_person_sex) TextView tvSexSet;
-    @BindView(R.id.tv_person_blog) TextView tvBlog;
-    @BindView(R.id.tv_person_email) TextView tvEmail;
-    @BindView(R.id.rip_name) RippleView rpName;
-    @BindView(R.id.rip_sex) RippleView rpSex;
-    @BindView(R.id.rip_email) RippleView rpEmail;
-    @BindView(R.id.rip_blog) RippleView rpBlog;
-    @BindView(R.id.rip_desc) RippleView rpDesc;
+    @BindView(R.id.iv_person)
+    CircleImageView ivHeader;
+    @BindView(R.id.tv_person_name)
+    TextView tvName;
+    @BindView(R.id.tv_person_name_set)
+    TextView tvNameSet;
+    @BindView(R.id.iv_person_sex)
+    ImageView ivSex;
+    @BindView(R.id.tv_person_stars)
+    TextView tvStars;
+    @BindView(R.id.tv_person_followers)
+    TextView tvFollowers;
+    @BindView(R.id.tv_person_desc)
+    TextView tvDesc;
+    @BindView(R.id.tv_person_desc_set)
+    TextView tvDescSet;
+    @BindView(R.id.tv_person_sex)
+    TextView tvSexSet;
+    @BindView(R.id.tv_person_blog)
+    TextView tvBlog;
+    @BindView(R.id.tv_person_email)
+    TextView tvEmail;
+    @BindView(R.id.rip_name)
+    RelativeLayout rpName;
+    @BindView(R.id.rip_sex)
+    RelativeLayout rpSex;
+    @BindView(R.id.rip_email)
+    RelativeLayout rpEmail;
+    @BindView(R.id.rip_blog)
+    RelativeLayout rpBlog;
+    @BindView(R.id.rip_desc)
+    RelativeLayout rpDesc;
+    @BindView(R.id.btn_person_add_friend)
+    Button btnAddFriend;
+
+
+    private String filePath;
+    private UserBean userBean;
+    private UserBean currentUser;
+    private boolean isCurrent;
 
 
     @Override
@@ -74,28 +110,42 @@ public class PersonActivity extends MvpActivity<PersonView,PersonPresenter> impl
     @Override
     protected void initViews(Bundle savedInstanceState) {
         initToolBar(getResources().getString(R.string.person));
-        rpName.setOnRippleCompleteListener(this);
-        rpSex.setOnRippleCompleteListener(this);
-        rpEmail.setOnRippleCompleteListener(this);
-        rpBlog.setOnRippleCompleteListener(this);
-        rpDesc.setOnRippleCompleteListener(this);
+        rpName.setOnClickListener(this);
+        rpSex.setOnClickListener(this);
+        rpEmail.setOnClickListener(this);
+        rpBlog.setOnClickListener(this);
+        rpDesc.setOnClickListener(this);
+        btnAddFriend.setOnClickListener(this);
 
-        rxBind();
+
+        showProgress();
+        isCurrent = getIntent().getBooleanExtra(CURRENT,false);
+        userBean = (UserBean) getIntent().getSerializableExtra("user");
+        currentUser = UserBean.getCurrentUser();
+
     }
 
     @Override
     protected void initData() {
-        UserBean userBean = UserManager.readUser();
-        setViews(userBean);
+        if (!isCurrent){
+            setViews(userBean);
+        }
+        else {
+            setViews(currentUser);
+        }
+        rxBind();
     }
 
-    private void rxBind(){
+    private void rxBind() {
+        if (!isCurrent) {
+            return;
+        }
         RxView.clicks(ivHeader)
                 .compose(new RxPermissions(activity).ensureEach(Manifest.permission.READ_EXTERNAL_STORAGE))
                 .subscribe(new Consumer<Permission>() {
                     @Override
                     public void accept(Permission permission) throws Exception {
-                        if (permission.granted){
+                        if (permission.granted) {
                             Matisse.from(activity)
                                     .choose(MimeType.allOf())
                                     .countable(true)
@@ -105,11 +155,9 @@ public class PersonActivity extends MvpActivity<PersonView,PersonPresenter> impl
                                     .thumbnailScale(0.85f)
                                     .imageEngine(new GlideEngine())
                                     .forResult(REQUEST_CODE_CHOOSE);
-                        }
-                        else if (permission.shouldShowRequestPermissionRationale){
+                        } else if (permission.shouldShowRequestPermissionRationale) {
                             toast("Denied permission without ask never again");
-                        }
-                        else {
+                        } else {
                             toast("权限被拒绝，无法启用存储功能");
                         }
                     }
@@ -118,13 +166,15 @@ public class PersonActivity extends MvpActivity<PersonView,PersonPresenter> impl
 
 
     List<Uri> mSelected;
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE_CHOOSE && resultCode == RESULT_OK) {
             showProgress();
             mSelected = Matisse.obtainResult(data);
-            Bitmap bitmap = BitmapUtils.getBitmapFromUri(mSelected.get(0),activity);
+            Bitmap bitmap = BitmapUtils.getBitmapFromUri(mSelected.get(0), activity);
+            filePath = FileUtils.getRealFilePath(activity, mSelected.get(0));
             getPresenter().updateIcon(bitmap);
         }
     }
@@ -132,15 +182,14 @@ public class PersonActivity extends MvpActivity<PersonView,PersonPresenter> impl
     /**
      * 赋值
      */
-    private void setViews(UserBean userBean){
-        if (userBean != null){
+    private void setViews(final UserBean userBean) {
+        if (userBean != null) {
             tvName.setText(userBean.getName());
             tvNameSet.setText(userBean.getName());
-            if (userBean.getSex() == UserBean.BOY){
+            if (userBean.getSex() == UserBean.BOY) {
                 ivSex.setImageResource(R.mipmap.da_ren_list_boy);
                 tvSexSet.setText(getResources().getString(R.string.boy));
-            }
-            else {
+            } else {
                 ivSex.setImageResource(R.mipmap.da_ren_list_girl);
                 tvSexSet.setText(getResources().getString(R.string.girl));
             }
@@ -148,12 +197,46 @@ public class PersonActivity extends MvpActivity<PersonView,PersonPresenter> impl
             tvEmail.setText(userBean.getEmail());
             tvDescSet.setText(userBean.getDesc());
             tvBlog.setText(userBean.getBlog());
-            if (!TextUtils.isEmpty(userBean.rerturnHeaderImageUrl())){
-                GlideUtils.loadImageView(activity,userBean.rerturnHeaderImageUrl(),ivHeader);
+            if (!TextUtils.isEmpty(userBean.getAvatarUrl())) {
+                GlideUtils.loadImageView(activity, userBean.getAvatarUrl(), ivHeader);
             }
             tvFollowers.setText(String.valueOf(userBean.getFollowers()));
             tvStars.setText(String.valueOf(userBean.getStars()));
         }
+
+
+        if (isCurrent) {
+            btnAddFriend.setVisibility(View.GONE);
+            hideProgress();
+        } else {
+            btnAddFriend.setVisibility(View.VISIBLE);
+            currentUser = UserCacheUtils.getCachedUser(userBean.getObjectId());
+            final List<String> friends = new ArrayList<>();
+
+            AVQuery<AVUser> query = new AVQuery<>("_User");
+            query.findInBackground(new FindCallback<AVUser>() {
+                @Override
+                public void done(List<AVUser> list, AVException e) {
+                    if (e == null) {
+                        for (AVUser user : list) {
+                            friends.add(user.getObjectId());
+                        }
+                        hideProgress();
+
+                    } else {
+                       ToastUtils.showShortToast(e.getMessage());
+                       hideProgress();
+                    }
+                }
+            });
+
+            if (friends.contains(userBean.getObjectId())) {
+                btnAddFriend.setText(getResources().getString(R.string.send_sms));
+            } else {
+                btnAddFriend.setText(getResources().getString(R.string.add_friend));
+            }
+        }
+
     }
 
     @Override
@@ -167,13 +250,64 @@ public class PersonActivity extends MvpActivity<PersonView,PersonPresenter> impl
         ToastUtils.showShortToast(msg);
     }
 
+    /**
+     * 显示输入框
+     */
+    private void showInputDialog(final String title) {
+        if (!isCurrent) {
+            return;
+        }
+        new MaterialDialog.Builder(this)
+                .content("请输入" + title)
+                .inputType(InputType.TYPE_CLASS_TEXT
+                        | InputType.TYPE_TEXT_VARIATION_PERSON_NAME
+                        | InputType.TYPE_TEXT_FLAG_CAP_WORDS)
+                .inputRange(2, 50)
+                .positiveText("确定")
+                .input("", "", false, new MaterialDialog.InputCallback() {
+                    @Override
+                    public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
+                        showProgress();
+                        String key = "";
+                        if (NAME.equals(title)) {
+                            key = "name";
+                        } else if (EMAIL.equals(title)) {
+                            key = "email";
+                        } else if (BLOG.equals(title)) {
+                            key = "blog";
+                        } else if (DESC.equals(title)) {
+                            key = "desc";
+                        }
+                        getPresenter().updateUserHttp(key, String.valueOf(input));
+                    }
+                }).show();
+    }
+
     @Override
-    public void onComplete(RippleView rippleView) {
-        switch (rippleView.getId()){
+    public void updateInfo(UserBean userBean) {
+        if (userBean != null) {
+            if (!TextUtils.isEmpty(filePath)){
+                final UserBean leanchatUser = UserBean.getCurrentUser();
+                leanchatUser.saveAvatar(filePath, null);
+            }
+
+            setViews(userBean);
+            RxBus.getDefault().post(new EventMap.UpdateUserEvent());
+        }
+        hideProgress();
+    }
+
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
             case R.id.rip_name:
                 showInputDialog(NAME);
                 break;
             case R.id.rip_sex:
+                if (!isCurrent) {
+                    return;
+                }
                 new MaterialDialog.Builder(this)
                         .title("请选择性别")
                         .items(R.array.sex)
@@ -181,7 +315,7 @@ public class PersonActivity extends MvpActivity<PersonView,PersonPresenter> impl
                             @Override
                             public boolean onSelection(MaterialDialog dialog, View itemView, int which, CharSequence text) {
                                 showProgress();
-                                getPresenter().updateUserHttp("sex",which);
+                                getPresenter().updateUserHttp("sex", which);
                                 return true;
                             }
                         }).positiveText("确定")
@@ -196,50 +330,19 @@ public class PersonActivity extends MvpActivity<PersonView,PersonPresenter> impl
             case R.id.rip_desc:
                 showInputDialog(DESC);
                 break;
+            case R.id.btn_person_add_friend:
+                if (getResources().getString(R.string.add_friend).equals(btnAddFriend.getText().toString())) {
+                    AddRequestManager.getInstance().createAddRequestInBackground(this, currentUser);
+                } else {
+                    Intent intent = new Intent(activity, LCIMConversationActivity.class);
+                    intent.putExtra(LCIMConstants.PEER_ID, userBean.getObjectId());
+                    intent.putExtra(LCIMConstants.PEER_NAME, userBean.getName());
+                    activity.startActivity(intent);
+                    finish();
+                }
+                break;
             default:
                 break;
         }
-    }
-
-    /**
-     * 显示输入框
-     */
-    private void showInputDialog(final String title){
-        new MaterialDialog.Builder(this)
-                .content("请输入"+title)
-                .inputType(InputType.TYPE_CLASS_TEXT
-                        | InputType.TYPE_TEXT_VARIATION_PERSON_NAME
-                        | InputType.TYPE_TEXT_FLAG_CAP_WORDS)
-                .inputRange(2,50)
-                .positiveText("确定")
-                .input("", "", false, new MaterialDialog.InputCallback() {
-                    @Override
-                    public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
-                        showProgress();
-                        String key = "";
-                        if (NAME.equals(title)){
-                            key = "name";
-                        }
-                        else if (EMAIL.equals(title)){
-                            key = "email";
-                        }
-                        else if (BLOG.equals(title)){
-                            key = "blog";
-                        }
-                        else if (DESC.equals(title)){
-                            key = "desc";
-                        }
-                        getPresenter().updateUserHttp(key,String.valueOf(input));
-                    }
-                }).show();
-    }
-
-    @Override
-    public void updateInfo(UserBean userBean) {
-        if (userBean != null){
-            setViews(userBean);
-            RxBus.getDefault().post(new EventMap.UpdateUserEvent());
-        }
-        hideProgress();
     }
 }

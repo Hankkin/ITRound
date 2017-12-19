@@ -205,7 +205,7 @@ public class HomeContentFragment extends MvpFragment<HomeContentView,HomeContent
 
     private class HomeContentAdapter extends BaseQuickAdapter<GankBean,BaseViewHolder>{
 
-        UserBean userBean = UserManager.getInstance().getUserBean();
+        UserBean userBean = UserBean.getCurrentUser();
 
         public HomeContentAdapter() {
             super(R.layout.adapter_home_gank);

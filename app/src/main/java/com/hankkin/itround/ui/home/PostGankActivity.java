@@ -21,7 +21,7 @@ import com.hankkin.library.utils.ToastUtils;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class PostGankActivity extends MvpActivity<PostGankView,PostGankPresenter> implements PostGankView{
+public class PostGankActivity extends MvpActivity<PostGankView, PostGankPresenter> implements PostGankView {
 
     @BindView(R.id.tv_post_type)
     EditText etType;
@@ -53,12 +53,17 @@ public class PostGankActivity extends MvpActivity<PostGankView,PostGankPresenter
         etUrl.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus){
+                if (hasFocus) {
                     ClipboardManager cmb = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-                    if (!TextUtils.isEmpty(cmb.getText().toString())){
-                        etUrl.setText(cmb.getText().toString());
-                        cmb.setText("");
+                    if (cmb != null) {
+                        if (cmb.getText() != null) {
+                            if (!TextUtils.isEmpty(cmb.getText().toString())) {
+                                etUrl.setText(cmb.getText().toString());
+                                cmb.setText("");
+                            }
+                        }
                     }
+
                 }
             }
         });
@@ -67,10 +72,14 @@ public class PostGankActivity extends MvpActivity<PostGankView,PostGankPresenter
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
-        if (hasFocus){
+        if (hasFocus) {
             ClipboardManager cmb = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-            if (!TextUtils.isEmpty(cmb.getText().toString())){
-                etUrl.setText(cmb.getText().toString());
+            if (cmb != null) {
+                if (cmb.getText() != null) {
+                    if (!TextUtils.isEmpty(cmb.getText().toString())) {
+                        etUrl.setText(cmb.getText().toString());
+                    }
+                }
             }
         }
     }
@@ -80,24 +89,24 @@ public class PostGankActivity extends MvpActivity<PostGankView,PostGankPresenter
         return new PostGankPresenter();
     }
 
-    private void postClick(){
+    private void postClick() {
         String url = etUrl.getText().toString();
         String who = etWho.getText().toString();
         String type = etType.getText().toString();
         String desc = etDesc.getText().toString();
-        if (TextUtils.isEmpty(url)){
+        if (TextUtils.isEmpty(url)) {
             ToastUtils.showShortToast(R.string.post_gank_url);
             return;
         }
-        if (TextUtils.isEmpty(who)){
+        if (TextUtils.isEmpty(who)) {
             ToastUtils.showShortToast(R.string.post_gank_who);
             return;
         }
-        if (TextUtils.isEmpty(type)){
+        if (TextUtils.isEmpty(type)) {
             ToastUtils.showShortToast(R.string.post_gank_type);
             return;
         }
-        if (TextUtils.isEmpty(desc)){
+        if (TextUtils.isEmpty(desc)) {
             ToastUtils.showShortToast(R.string.post_gank_desc);
             return;
         }
@@ -124,7 +133,7 @@ public class PostGankActivity extends MvpActivity<PostGankView,PostGankPresenter
     }
 
     @OnClick(R.id.tv_post_type)
-    void selectType(){
+    void selectType() {
         new MaterialDialog.Builder(activity)
                 .items(HomeFragment.HOME_TAG)
                 .itemsCallback(new MaterialDialog.ListCallback() {

@@ -5,12 +5,19 @@ import android.support.v4.view.PagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.gigamole.infinitecycleviewpager.VerticalInfiniteCycleViewPager;
+import com.hankkin.itround.ITApplication;
 import com.hankkin.itround.R;
+import com.hankkin.itround.bean.UserBean;
 import com.hankkin.itround.utils.Utils;
+import com.hankkin.library.utils.GlideUtils;
 
-import static com.hankkin.itround.utils.Utils.setupItem;
+import java.util.ArrayList;
+import java.util.List;
+
 
 
 /**
@@ -18,60 +25,43 @@ import static com.hankkin.itround.utils.Utils.setupItem;
  */
 public class HorizontalPagerAdapter extends PagerAdapter {
 
-    private final Utils.LibraryObject[] LIBRARIES = new Utils.LibraryObject[]{
-            new Utils.LibraryObject(
-                    R.mipmap.ic_launcher,
-                    "Strategy"
-            ),
-            new Utils.LibraryObject(
-                    R.mipmap.ic_launcher,
-                    "Design"
-            ),
-            new Utils.LibraryObject(
-                    R.mipmap.ic_launcher,
-                    "Development"
-            ),
-            new Utils.LibraryObject(
-                    R.mipmap.ic_launcher,
-                    "Quality Assurance"
-            ),
-            new Utils.LibraryObject(
-                    R.mipmap.ic_launcher,
-                    "Hankkin"
-            ),
-            new Utils.LibraryObject(
-                    R.mipmap.ic_launcher,
-                    "露露"
-            ),
-            new Utils.LibraryObject(
-                    R.mipmap.ic_launcher,
-                    "雪莉杨"
-            ),
-            new Utils.LibraryObject(
-                    R.mipmap.ic_launcher,
-                    "胡八一"
-            )
-    };
+
 
     private Context mContext;
     private LayoutInflater mLayoutInflater;
 
     private boolean mIsTwoWay;
+    private List<UserBean> data = new ArrayList<>();
+    private PageOnClickListener listener;
 
-    public HorizontalPagerAdapter(final Context context, final boolean isTwoWay) {
+    public HorizontalPagerAdapter(final Context context, final boolean isTwoWay,List<UserBean> data) {
         mContext = context;
         mLayoutInflater = LayoutInflater.from(context);
         mIsTwoWay = isTwoWay;
+        this.data = data;
     }
+
+    public interface PageOnClickListener{
+        void onClick(int position);
+    }
+
 
     @Override
     public int getCount() {
-        return mIsTwoWay ? 6 : LIBRARIES.length;
+        return mIsTwoWay ? 6 : data.size();
     }
 
     @Override
     public int getItemPosition(final Object object) {
         return POSITION_NONE;
+    }
+
+    public UserBean getItem(int postion){
+        return data.get(postion);
+    }
+
+    public void setListener(PageOnClickListener listener) {
+        this.listener = listener;
     }
 
     @Override
@@ -82,14 +72,24 @@ public class HorizontalPagerAdapter extends PagerAdapter {
 
             final VerticalInfiniteCycleViewPager verticalInfiniteCycleViewPager =
                     (VerticalInfiniteCycleViewPager) view.findViewById(R.id.vicvp);
-            verticalInfiniteCycleViewPager.setAdapter(
-                    new VerticalPagerAdapter(mContext)
-            );
+//            verticalInfiniteCycleViewPager.setAdapter(
+//                    new VerticalPagerAdapter(mContext)
+//            );
             verticalInfiniteCycleViewPager.setCurrentItem(position);
         } else {
             view = mLayoutInflater.inflate(R.layout.item, container, false);
-            setupItem(view, LIBRARIES[position]);
+            final TextView txt = (TextView) view.findViewById(R.id.txt_item);
+            txt.setText(data.get(position).getName());
+
+            final ImageView img = (ImageView) view.findViewById(R.id.img_item);
+            GlideUtils.loadImageView(ITApplication.getInstance(),data.get(position).getAvatarUrl(),img);
         }
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listener.onClick(position);
+            }
+        });
 
         container.addView(view);
         return view;

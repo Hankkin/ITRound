@@ -49,4 +49,12 @@
         <item name="android:drawablePadding">@dimen/dp_10</item>
         <item name="android:layout_marginBottom">@dimen/dp_10</item>
     </style>
+
+    <style name="btnTheme">
+        <item name="android:layout_marginRight">@dimen/dp_48</item>
+        <item name="android:layout_marginLeft">@dimen/dp_48</item>
+        <item name="android:textSize">@dimen/sp_15</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:background">@drawable/bg_colorprimary_cir</item>
+    </style>
 </resources>

@@ -9,11 +9,25 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.avos.avoscloud.AVException;
+import com.avos.avoscloud.AVQuery;
+import com.avos.avoscloud.AVUser;
+import com.avos.avoscloud.FindCallback;
 import com.gigamole.infinitecycleviewpager.HorizontalInfiniteCycleViewPager;
+import com.hankkin.itround.Constant;
 import com.hankkin.itround.R;
 import com.hankkin.itround.adapter.HorizontalPagerAdapter;
+import com.hankkin.itround.bean.UserBean;
+import com.hankkin.itround.chat.FriendsManager;
+import com.hankkin.itround.chat.UserCacheUtils;
+import com.hankkin.itround.ui.PersonActivity;
 import com.hankkin.itround.widget.GradationScrollView;
 import com.hankkin.library.base.BaseFragment;
+import com.hankkin.library.utils.ToastUtils;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 
@@ -23,7 +37,7 @@ import butterknife.BindView;
  * Mail: 1019283569@qq.com
  */
 
-public class FindFragment extends BaseFragment {
+public class FindFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener{
 
     @BindView(R.id.scrollView)
     GradationScrollView scrollView;
@@ -34,6 +48,7 @@ public class FindFragment extends BaseFragment {
     @BindView(R.id.hicvp) HorizontalInfiniteCycleViewPager hicVp;
 
     private int height;
+    private HorizontalPagerAdapter adapter;
 
     public static FindFragment newInstance(int index) {
         FindFragment fragment = new FindFragment();
@@ -46,7 +61,8 @@ public class FindFragment extends BaseFragment {
     @Override
     protected void initViewsAndEvents(View view) {
         initListeners();
-        hicVp.setAdapter(new HorizontalPagerAdapter(getContext(), false));
+        initSwipe(refreshLayout,this);
+
     }
 
     @Override
@@ -56,9 +72,50 @@ public class FindFragment extends BaseFragment {
 
     @Override
     protected void initData() {
-
+        getFriends();
     }
 
+    private void getFriends(){
+
+        AVQuery<UserBean> q = UserBean.getQuery(UserBean.class);
+        q.limit(100);
+        UserBean user = UserBean.getCurrentUser();
+        List<String> friendIds = new ArrayList<String>(FriendsManager.getFriendIds());
+        friendIds.add(user.getObjectId());
+        q.whereNotContainedIn(Constant.OBJECT_ID, friendIds);
+        q.orderByDescending(Constant.UPDATED_AT);
+        q.setCachePolicy(AVQuery.CachePolicy.NETWORK_ELSE_CACHE);
+        q.findInBackground(new FindCallback<UserBean>() {
+            @Override
+            public void done(List<UserBean> list, AVException e) {
+                if (e == null){
+                    UserCacheUtils.cacheUsers(list);
+                    List<UserBean> userBeanList = new ArrayList<>();
+                    for (UserBean user : list){
+                        userBeanList.add(user);
+                    }
+                    adapter = new HorizontalPagerAdapter(getContext(), false,userBeanList);
+                    hicVp.setAdapter(adapter);
+                    refreshLayout.setRefreshing(false);
+                    adapter.setListener(new HorizontalPagerAdapter.PageOnClickListener() {
+                        @Override
+                        public void onClick(int position) {
+                            UserBean userBean = adapter.getItem(position);
+                            Bundle bundle = new Bundle();
+                            bundle.putSerializable("user", (Serializable) userBean);
+                            bundle.putBoolean(PersonActivity.CURRENT,false);
+                            gotoActivity(PersonActivity.class,false,bundle);
+                        }
+                    });
+                }
+                else {
+                    ToastUtils.showShortToast(e.getMessage());
+                    refreshLayout.setRefreshing(false);
+                }
+
+            }
+        });
+    }
 
     /**
      * 顶部图片渐变滑动监听
@@ -99,5 +156,10 @@ public class FindFragment extends BaseFragment {
                 });
             }
         });
+    }
+
+    @Override
+    public void onRefresh() {
+        getFriends();
     }
 }

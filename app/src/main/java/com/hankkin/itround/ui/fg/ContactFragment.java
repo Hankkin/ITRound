@@ -1,35 +1,40 @@
 package com.hankkin.itround.ui.fg;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.avos.avoscloud.AVException;
+import com.avos.avoscloud.AVUser;
+import com.avos.avoscloud.FindCallback;
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.chad.library.adapter.base.BaseViewHolder;
 import com.hankkin.itround.R;
+import com.hankkin.itround.adapter.CircleFriendAdapter;
 import com.hankkin.itround.bean.UserBean;
-import com.hankkin.itround.callback.FindUsersCallBack;
-import com.hankkin.itround.manage.UserManager;
+import com.hankkin.itround.chat.AddRequestManager;
+import com.hankkin.itround.chat.FriendsManager;
+import com.hankkin.itround.event.EventMap;
+import com.hankkin.itround.ui.circle.NewFriendActivity;
 import com.hankkin.itround.widget.LetterComparator;
 import com.hankkin.itround.widget.PinnedHeaderDecoration;
 import com.hankkin.library.base.BaseFragment;
-import com.hankkin.library.utils.GlideUtils;
-import com.hankkin.library.utils.LogUtils;
+import com.hankkin.library.rx.RxBus;
 import com.hankkin.library.view.EmptyLayout;
-import com.yalantis.jellytoolbar.listener.JellyListener;
-import com.yalantis.jellytoolbar.widget.JellyToolbar;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 import cc.solart.wave.WaveSideBarView;
+import cn.leancloud.chatkit.activity.LCIMConversationActivity;
+import cn.leancloud.chatkit.utils.LCIMConstants;
+import io.reactivex.functions.Consumer;
 
 /**
  * Created by hankkin on 2017/10/12.
@@ -48,6 +53,9 @@ public class ContactFragment extends BaseFragment{
     SwipeRefreshLayout refreshLayout;
     @BindView(R.id.empty)
     EmptyLayout emptyLayout;
+    @BindView(R.id.iv_msg_tips)
+    ImageView msgTipsView;
+
 
 
     private CircleFriendAdapter adapter;
@@ -73,7 +81,8 @@ public class ContactFragment extends BaseFragment{
             }
         });
         rv.addItemDecoration(decoration);
-
+        adapter = new CircleFriendAdapter();
+        rv.setAdapter(adapter);
     }
 
     @Override
@@ -83,8 +92,7 @@ public class ContactFragment extends BaseFragment{
 
     @Override
     protected void initData() {
-
-
+        operateBus();
         sideBarView.setOnTouchLetterChangeListener(new WaveSideBarView.OnTouchLetterChangeListener() {
             @Override
             public void onLetterChange(String letter) {
@@ -98,29 +106,67 @@ public class ContactFragment extends BaseFragment{
             }
         });
 
-        queryUser();
+        adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                UserBean userBean = (UserBean) adapter.getItem(position);
+                Intent intent = new Intent(getContext(), LCIMConversationActivity.class);
+                intent.putExtra(LCIMConstants.PEER_ID, userBean.getObjectId());
+                intent.putExtra(LCIMConstants.PEER_NAME, userBean.getName());
+                activity.startActivity(intent);
+            }
+        });
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                queryUser();
+            }
+        }).start();
+        updateNewRequestBadge();
 
     }
 
-    private void queryUser() {
-        UserManager.queryAllUser(new FindUsersCallBack() {
-            @Override
-            public void findAllUser(List<UserBean> data) {
-                LogUtils.e(TAG,data.size()+"");
-                Collections.sort(data, new LetterComparator());
-                adapter = new CircleFriendAdapter();
-                adapter.setNewData(data);
-                rv.setAdapter(adapter);
-                refreshLayout.setRefreshing(false);
-                refreshLayout.setEnabled(false);
-            }
+    private void updateNewRequestBadge() {
+        msgTipsView.setVisibility(
+                AddRequestManager.getInstance().hasUnreadRequests() ? View.VISIBLE : View.GONE);
+    }
 
+    private void queryUser() {
+
+        FriendsManager.fetchFriends(true, new FindCallback<UserBean>() {
             @Override
-            public void findFail(String msg) {
+            public void done(List<UserBean> list, AVException e) {
+                List<UserBean> userBeanList = new ArrayList<>();
+                for (UserBean user : list){
+                    userBeanList.add(user);
+                }
+                Collections.sort(userBeanList, new LetterComparator());
+
+                adapter.setNewData(userBeanList);
+                adapter.notifyDataSetChanged();
                 refreshLayout.setRefreshing(false);
                 refreshLayout.setEnabled(false);
+                filterException(e);
             }
         });
+    }
+
+    private void operateBus(){
+        RxBus.getDefault().toObservable(EventMap.BaseEvent.class)
+                .subscribe(new Consumer<EventMap.BaseEvent>() {
+                    @Override
+                    public void accept(EventMap.BaseEvent event) throws Exception {
+                        if (event instanceof EventMap.InvitationEvent){
+                            AddRequestManager.getInstance().unreadRequestsIncrement();
+                            updateNewRequestBadge();
+                        }
+                        else if (event instanceof EventMap.ContactRefreshEvent){
+                            queryUser();
+                        }
+
+                    }
+                });
     }
 
     @Override
@@ -129,39 +175,18 @@ public class ContactFragment extends BaseFragment{
     }
 
 
+    @OnClick(R.id.layout_new)
+    void goNewRequest()
+    {
+        gotoActivity(NewFriendActivity.class);
+    }
 
-    private class CircleFriendAdapter extends BaseQuickAdapter<UserBean, BaseViewHolder> {
 
 
-        public CircleFriendAdapter() {
-            super(R.layout.adapter_circle_friend);
-        }
-
-        @Override
-        protected void convert(BaseViewHolder helper, final UserBean item) {
-            helper.setText(R.id.tv_adapter_cir_name, item.getName());
-            helper.setText(R.id.tv_adapter_cir_desc, item.getDesc());
-
-            if (item.getSex() == UserBean.BOY) {
-                helper.setImageResource(R.id.iv_adapter_cir_sex, R.mipmap.da_ren_list_boy);
-            } else {
-                helper.setImageResource(R.id.iv_adapter_cir_sex, R.mipmap.da_ren_list_girl);
-
-            }
-            ImageView ivHeader = helper.getView(R.id.iv_cir_icon);
-            if (!TextUtils.isEmpty(item.rerturnHeaderImageUrl())) {
-                GlideUtils.loadImageView(activity, item.rerturnHeaderImageUrl(), ivHeader);
-            }
-        }
-        public int getLetterPosition(String letter){
-            for (int i = 0 ; i < getData().size(); i++){
-                if(getData().get(i).getUsername().equals(letter)){
-                    return i;
-                }
-            }
-            return -1;
-        }
-
+    @Override
+    public void onResume() {
+        super.onResume();
+        updateNewRequestBadge();
     }
 
 

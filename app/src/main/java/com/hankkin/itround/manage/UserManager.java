@@ -1,21 +1,23 @@
 package com.hankkin.itround.manage;
 
-import android.text.TextUtils;
-
 import com.avos.avoscloud.AVException;
-import com.avos.avoscloud.AVObject;
 import com.avos.avoscloud.AVQuery;
 import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.FindCallback;
 import com.avos.avoscloud.GetCallback;
+import com.avos.avoscloud.im.v2.AVIMClient;
+import com.avos.avoscloud.im.v2.AVIMException;
+import com.avos.avoscloud.im.v2.callback.AVIMClientCallback;
 import com.hankkin.itround.Constant;
-import com.hankkin.itround.bean.AVObjectToModel;
 import com.hankkin.itround.bean.UserBean;
 import com.hankkin.itround.callback.FindUsersCallBack;
+import com.hankkin.itround.chat.PushManager;
 import com.hankkin.library.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import cn.leancloud.chatkit.LCChatKit;
 
 /**
  * Created by hankkin on 2017/10/17.
@@ -33,24 +35,8 @@ public class UserManager {
         return instance;
     }
 
-    public UserBean userBean;
-
-
-    public UserBean getUserBean() {
-        if (userBean == null){
-            return readUser();
-        }
-        else {
-            return userBean;
-        }
-    }
-
-    public void setUserBean(UserBean userBean) {
-        this.userBean = userBean;
-    }
-
     public static boolean isLogin() {
-        if (!TextUtils.isEmpty(Utils.getSpUtils().getString(Constant.USER_ID))) {
+        if (UserBean.getCurrentUser() != null) {
             return true;
         } else {
             return false;
@@ -61,47 +47,25 @@ public class UserManager {
         return Utils.getSpUtils().getString(Constant.USER_ID);
     }
 
-    public static void saveUser(AVUser user) {
-        Utils.getSpUtils().saveObject(Constant.USER, new AVObjectToModel(user).getModel(UserBean.class));
-        Utils.getSpUtils().put(Constant.USER_ID, user.getObjectId());
-    }
 
-    public static UserBean readUser() {
-        UserBean userBean = Utils.getSpUtils().getObject(Constant.USER, UserBean.class);
-        getInstance().setUserBean(userBean);
-        return userBean;
-    }
-
-    public static void getUserInfo(final GetCallback<AVUser> callback) {
-        AVQuery<AVUser> query = new AVQuery<>("_User");
-        query.getInBackground(UserManager.getUid(), new GetCallback<AVUser>() {
+    public static void logoutUser(){
+        LCChatKit.getInstance().close(new AVIMClientCallback() {
             @Override
-            public void done(AVUser user, AVException e) {
-                callback.done(user, e);
+            public void done(AVIMClient avimClient, AVIMException e) {
+                Utils.getSpUtils().clear();
             }
         });
+        PushManager.getInstance().unsubscribeCurrentUserChannel();
+        UserBean.logOut();
     }
 
-    /**
-     * 查询所有用户
-     * @param callBack
-     */
-    public static void queryAllUser(final FindUsersCallBack callBack){
-        AVQuery<AVUser> query = new AVQuery<>("_User");
-        query.findInBackground(new FindCallback<AVUser>() {
+
+    public static void getUserInfo(final GetCallback<UserBean> callback) {
+        AVQuery<UserBean> query = UserBean.getQuery(UserBean.class);
+        query.getInBackground(UserBean.getCurrentUserId(), new GetCallback<UserBean>() {
             @Override
-            public void done(List<AVUser> list, AVException e) {
-                if (e == null){
-                    List<UserBean> userBeanList = new ArrayList<>();
-                    for (AVUser user : list){
-                        UserBean userBean = new AVObjectToModel(user).getModel(UserBean.class);
-                        userBeanList.add(userBean);
-                    }
-                    callBack.findAllUser(userBeanList);
-                }
-                else {
-                    callBack.findFail(e.getMessage());
-                }
+            public void done(UserBean user, AVException e) {
+                callback.done(user, e);
             }
         });
     }
