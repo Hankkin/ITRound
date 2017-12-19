@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/tool_bar"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="#fd7722"
+        >
+
+        <ImageView
+            android:src="@drawable/back"
+            android:id="@+id/tool_bar_back"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
+
+        <TextView
+            android:textSize="15sp"
+            android:textColor="#fff"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:singleLine="true"
+            android:id="@+id/tv_toolbar_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            />
+    </RelativeLayout>
+    <fragment
+        android:id="@+id/fragment_chat"
+        android:name="cn.leancloud.chatkit.activity.LCIMConversationFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+</LinearLayout>

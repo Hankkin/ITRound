@@ -1,0 +1,18 @@
+[
+    {
+        "merged": "/Users/huanghaijie/Documents/Work/Hankkin/ITRound/leancloudchatkit/build/intermediates/res/merged/release/layout-v21/notification_template_icon_group.xml",
+        "source": "/Users/huanghaijie/.android/build-cache/7bc5d96293be604fb57f002d3750e669cc72928c/output/res/layout-v21/notification_template_icon_group.xml"
+    },
+    {
+        "merged": "/Users/huanghaijie/Documents/Work/Hankkin/ITRound/leancloudchatkit/build/intermediates/res/merged/release/layout-v21/notification_action_tombstone.xml",
+        "source": "/Users/huanghaijie/.android/build-cache/7bc5d96293be604fb57f002d3750e669cc72928c/output/res/layout-v21/notification_action_tombstone.xml"
+    },
+    {
+        "merged": "/Users/huanghaijie/Documents/Work/Hankkin/ITRound/leancloudchatkit/build/intermediates/res/merged/release/layout-v21/notification_template_custom_big.xml",
+        "source": "/Users/huanghaijie/.android/build-cache/7bc5d96293be604fb57f002d3750e669cc72928c/output/res/layout-v21/notification_template_custom_big.xml"
+    },
+    {
+        "merged": "/Users/huanghaijie/Documents/Work/Hankkin/ITRound/leancloudchatkit/build/intermediates/res/merged/release/layout-v21/notification_action.xml",
+        "source": "/Users/huanghaijie/.android/build-cache/7bc5d96293be604fb57f002d3750e669cc72928c/output/res/layout-v21/notification_action.xml"
+    }
+]
