@@ -30,7 +30,7 @@ ext{
             "retrofit-converters"    : "com.squareup.retrofit2:retrofit-converters:2.3.0",
             "converter-gson"        : "com.squareup.retrofit2:converter-gson:2.3.0",
             "adapter-rxjava"        : "com.squareup.retrofit2:adapter-rxjava2:2.3.0",
-            "logging-interceptor"   : "com.squareup.okhttp3:logging-interceptor:3.9.0",
+            "logging-interceptor"   : "com.squareup.okhttp3:logging-interceptor:3.8.1",
             "gson"                  : "com.google.code.gson:gson:2.6.2",
             "eventbus"              : "org.greenrobot:eventbus:3.0.0",
             "xrecyclerview"         : "com.github.limedroid:ARecyclerView:v1.1.5",
