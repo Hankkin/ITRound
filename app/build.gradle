@@ -57,7 +57,6 @@ dependencies {
     compile rootProject.ext.dependencies["support-v4"]
     compile rootProject.ext.dependencies["design"]
     compile rootProject.ext.dependencies["cardview"]
-    compile rootProject.ext.dependencies["appcompat-v7"]
     //点赞喜欢按钮
     compile 'com.github.jd-alexander:LikeButton:0.2.3'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'

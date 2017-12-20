@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.hankkin.library.R;
 import com.hankkin.library.utils.ToastUtils;
+import com.hankkin.library.view.EmptyLayout;
 import com.hankkin.library.view.ProgressDialog;
 
 import butterknife.ButterKnife;
@@ -28,8 +29,7 @@ public abstract class BaseAcitvity extends AppCompatActivity implements BaseView
     protected Activity activity;
     protected ProgressDialog loading;
     private boolean hasBus = false;
-    protected View noDataStubView;
-    protected View sysErrStubView;
+    protected EmptyLayout emptyLayout;
 
 
     @Override

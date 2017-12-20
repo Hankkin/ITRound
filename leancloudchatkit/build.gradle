@@ -17,8 +17,9 @@ android {
 }
 
 dependencies {
-    compile 'com.android.support:support-v4:25.2.0'
-    compile 'com.android.support:appcompat-v7:25.2.0'
+    //noinspection GradleCompatible
+    compile 'com.android.support:support-v4:25.3.1'
+    compile 'com.android.support:appcompat-v7:25.3.1'
 
 //    compile fileTree(dir:"libs", include:["*.jar"])
     //avoscloud-sdk 为 LeanCloud基础包
@@ -26,7 +27,7 @@ dependencies {
     //avoscloud-push 为推送与实时聊天需要的包
     compile ('cn.leancloud.android:avoscloud-push:v4.5.4@aar'){transitive = true}
 
-    compile 'com.android.support:recyclerview-v7:25.2.0'
+    compile 'com.android.support:recyclerview-v7:25.3.1'
 
     compile 'com.squareup.picasso:picasso:2.5.2'
 
