@@ -100,6 +100,7 @@ public class PersonActivity extends MvpActivity<PersonView, PersonPresenter> imp
     private UserBean userBean;
     private UserBean currentUser;
     private boolean isCurrent;
+    private String uid;
 
 
     @Override
@@ -121,13 +122,14 @@ public class PersonActivity extends MvpActivity<PersonView, PersonPresenter> imp
         showProgress();
         isCurrent = getIntent().getBooleanExtra(CURRENT,false);
         userBean = (UserBean) getIntent().getSerializableExtra("user");
-        currentUser = UserBean.getCurrentUser();
-
+        uid = getIntent().getStringExtra("id");
+        currentUser = UserCacheUtils.getCachedUser(UserBean.getCurrentUserId());
     }
 
     @Override
     protected void initData() {
         if (!isCurrent){
+            userBean = UserCacheUtils.getCachedUser(uid);
             setViews(userBean);
         }
         else {
@@ -288,7 +290,7 @@ public class PersonActivity extends MvpActivity<PersonView, PersonPresenter> imp
         if (userBean != null) {
             if (!TextUtils.isEmpty(filePath)){
                 final UserBean leanchatUser = UserBean.getCurrentUser();
-                leanchatUser.saveAvatar(filePath, null);
+                leanchatUser.saveAvatar(userBean.getAvatarUrl(), null);
             }
 
             setViews(userBean);

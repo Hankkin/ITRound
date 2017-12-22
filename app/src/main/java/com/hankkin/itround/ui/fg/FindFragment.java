@@ -102,7 +102,7 @@ public class FindFragment extends BaseFragment implements SwipeRefreshLayout.OnR
                         public void onClick(int position) {
                             UserBean userBean = adapter.getItem(position);
                             Bundle bundle = new Bundle();
-                            bundle.putSerializable("user", (Serializable) userBean);
+                            bundle.putSerializable("id", userBean.getObjectId());
                             bundle.putBoolean(PersonActivity.CURRENT,false);
                             gotoActivity(PersonActivity.class,false,bundle);
                         }

@@ -24,12 +24,12 @@
         "source": "/Users/huanghaijie/.android/build-cache/7e117c7a2913b46d3c3b643fbbf406438290ecd5/output/res/layout/notification_template_media.xml"
     },
     {
-        "merged": "/Users/huanghaijie/Documents/Work/Hankkin/ITRound/leancloudchatkit/build/intermediates/res/merged/debug/layout/abc_list_menu_item_icon.xml",
-        "source": "/Users/huanghaijie/.android/build-cache/7e117c7a2913b46d3c3b643fbbf406438290ecd5/output/res/layout/abc_list_menu_item_icon.xml"
-    },
-    {
         "merged": "/Users/huanghaijie/Documents/Work/Hankkin/ITRound/leancloudchatkit/build/intermediates/res/merged/debug/layout/abc_list_menu_item_radio.xml",
         "source": "/Users/huanghaijie/.android/build-cache/7e117c7a2913b46d3c3b643fbbf406438290ecd5/output/res/layout/abc_list_menu_item_radio.xml"
+    },
+    {
+        "merged": "/Users/huanghaijie/Documents/Work/Hankkin/ITRound/leancloudchatkit/build/intermediates/res/merged/debug/layout/abc_list_menu_item_icon.xml",
+        "source": "/Users/huanghaijie/.android/build-cache/7e117c7a2913b46d3c3b643fbbf406438290ecd5/output/res/layout/abc_list_menu_item_icon.xml"
     },
     {
         "merged": "/Users/huanghaijie/Documents/Work/Hankkin/ITRound/leancloudchatkit/build/intermediates/res/merged/debug/layout/abc_search_view.xml",
@@ -60,12 +60,12 @@
         "source": "/Users/huanghaijie/.android/build-cache/7e117c7a2913b46d3c3b643fbbf406438290ecd5/output/res/layout/abc_dialog_title_material.xml"
     },
     {
-        "merged": "/Users/huanghaijie/Documents/Work/Hankkin/ITRound/leancloudchatkit/build/intermediates/res/merged/debug/layout/abc_action_menu_item_layout.xml",
-        "source": "/Users/huanghaijie/.android/build-cache/7e117c7a2913b46d3c3b643fbbf406438290ecd5/output/res/layout/abc_action_menu_item_layout.xml"
-    },
-    {
         "merged": "/Users/huanghaijie/Documents/Work/Hankkin/ITRound/leancloudchatkit/build/intermediates/res/merged/debug/layout/lcim_chat_item_image_layout.xml",
         "source": "/Users/huanghaijie/Documents/Work/Hankkin/ITRound/leancloudchatkit/src/main/res/layout/lcim_chat_item_image_layout.xml"
+    },
+    {
+        "merged": "/Users/huanghaijie/Documents/Work/Hankkin/ITRound/leancloudchatkit/build/intermediates/res/merged/debug/layout/abc_action_menu_item_layout.xml",
+        "source": "/Users/huanghaijie/.android/build-cache/7e117c7a2913b46d3c3b643fbbf406438290ecd5/output/res/layout/abc_action_menu_item_layout.xml"
     },
     {
         "merged": "/Users/huanghaijie/Documents/Work/Hankkin/ITRound/leancloudchatkit/build/intermediates/res/merged/debug/layout/abc_alert_dialog_title_material.xml",

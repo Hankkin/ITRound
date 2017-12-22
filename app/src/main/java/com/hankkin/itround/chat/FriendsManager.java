@@ -29,8 +29,7 @@ public class FriendsManager {
   }
 
   public static void fetchFriends(boolean isForce, final FindCallback<UserBean> findCallback) {
-    AVQuery.CachePolicy policy =
-      (isForce ? AVQuery.CachePolicy.NETWORK_ELSE_CACHE : AVQuery.CachePolicy.CACHE_ELSE_NETWORK);
+    AVQuery.CachePolicy policy =AVQuery.CachePolicy.CACHE_ELSE_NETWORK;
     UserBean.getCurrentUser().findFriendsWithCachePolicy(policy, new FindCallback<UserBean>() {
       @Override
       public void done(List<UserBean> list, AVException e) {

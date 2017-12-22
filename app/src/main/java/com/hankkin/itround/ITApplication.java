@@ -14,7 +14,7 @@ import com.avos.avoscloud.im.v2.AVIMClient;
 import com.avos.avoscloud.im.v2.AVIMClientEventHandler;
 import com.hankkin.itround.bean.UserBean;
 import com.hankkin.itround.chat.AddRequest;
-import com.hankkin.itround.chat.CustomUserProvider;
+import com.hankkin.itround.chat.LeanchatUserProvider;
 import com.hankkin.itround.chat.PushManager;
 import com.hankkin.itround.greendao.dao.DaoMaster;
 import com.hankkin.itround.greendao.dao.DaoSession;
@@ -42,7 +42,7 @@ public class ITApplication extends Application {
         super.onCreate();
         application = this;
 
-        UserBean.alwaysUseSubUserClass(UserBean.class);
+        AVUser.registerSubclass(UserBean.class);
 
         AVObject.registerSubclass(AddRequest.class);
 
@@ -51,7 +51,7 @@ public class ITApplication extends Application {
         //开启调试日志
         AVOSCloud.setDebugLogEnabled(true);
 
-        LCChatKit.getInstance().setProfileProvider(new CustomUserProvider());
+        LCChatKit.getInstance().setProfileProvider(new LeanchatUserProvider());
 
         AVOSCloud.setLastModifyEnabled(true);
         PushManager.getInstance().init(this);

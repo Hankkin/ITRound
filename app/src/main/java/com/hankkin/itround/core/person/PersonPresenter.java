@@ -30,14 +30,14 @@ public class PersonPresenter extends BasePresent<PersonView> {
      * 更新用户信息并且获取最新用户
      */
     public void updateUserHttp(String key,Object value){
-        UserBean userBean = UserBean.getCurrentUser();
+        final UserBean userBean = UserBean.getCurrentUser();
         userBean.put(key,value);
         userBean.saveInBackground(new SaveCallback() {
             @Override
             public void done(AVException e) {
                 if (e == null){
                     AVQuery<UserBean> query = UserBean.getQuery(UserBean.class);
-                    query.getInBackground(UserManager.getUid(), new GetCallback<UserBean>() {
+                    query.getInBackground(userBean.getObjectId(), new GetCallback<UserBean>() {
                         @Override
                         public void done(UserBean user, AVException e) {
                             if (e == null){

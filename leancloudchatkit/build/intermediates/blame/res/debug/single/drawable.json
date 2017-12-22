@@ -12,16 +12,16 @@
         "source": "/Users/huanghaijie/.android/build-cache/7e117c7a2913b46d3c3b643fbbf406438290ecd5/output/res/drawable/abc_list_selector_holo_dark.xml"
     },
     {
-        "merged": "/Users/huanghaijie/Documents/Work/Hankkin/ITRound/leancloudchatkit/build/intermediates/res/merged/debug/drawable/lcim_chat_resend_bg.xml",
-        "source": "/Users/huanghaijie/Documents/Work/Hankkin/ITRound/leancloudchatkit/src/main/res/drawable/lcim_chat_resend_bg.xml"
+        "merged": "/Users/huanghaijie/Documents/Work/Hankkin/ITRound/leancloudchatkit/build/intermediates/res/merged/debug/drawable/lcim_chat_record_button_round_background.xml",
+        "source": "/Users/huanghaijie/Documents/Work/Hankkin/ITRound/leancloudchatkit/src/main/res/drawable/lcim_chat_record_button_round_background.xml"
     },
     {
         "merged": "/Users/huanghaijie/Documents/Work/Hankkin/ITRound/leancloudchatkit/build/intermediates/res/merged/debug/drawable/abc_btn_radio_material.xml",
         "source": "/Users/huanghaijie/.android/build-cache/7e117c7a2913b46d3c3b643fbbf406438290ecd5/output/res/drawable/abc_btn_radio_material.xml"
     },
     {
-        "merged": "/Users/huanghaijie/Documents/Work/Hankkin/ITRound/leancloudchatkit/build/intermediates/res/merged/debug/drawable/lcim_chat_record_button_round_background.xml",
-        "source": "/Users/huanghaijie/Documents/Work/Hankkin/ITRound/leancloudchatkit/src/main/res/drawable/lcim_chat_record_button_round_background.xml"
+        "merged": "/Users/huanghaijie/Documents/Work/Hankkin/ITRound/leancloudchatkit/build/intermediates/res/merged/debug/drawable/lcim_chat_resend_bg.xml",
+        "source": "/Users/huanghaijie/Documents/Work/Hankkin/ITRound/leancloudchatkit/src/main/res/drawable/lcim_chat_resend_bg.xml"
     },
     {
         "merged": "/Users/huanghaijie/Documents/Work/Hankkin/ITRound/leancloudchatkit/build/intermediates/res/merged/debug/drawable/abc_textfield_search_material.xml",
@@ -104,12 +104,12 @@
         "source": "/Users/huanghaijie/.android/build-cache/7e117c7a2913b46d3c3b643fbbf406438290ecd5/output/res/drawable/abc_seekbar_tick_mark_material.xml"
     },
     {
-        "merged": "/Users/huanghaijie/Documents/Work/Hankkin/ITRound/leancloudchatkit/build/intermediates/res/merged/debug/drawable/abc_list_selector_background_transition_holo_dark.xml",
-        "source": "/Users/huanghaijie/.android/build-cache/7e117c7a2913b46d3c3b643fbbf406438290ecd5/output/res/drawable/abc_list_selector_background_transition_holo_dark.xml"
-    },
-    {
         "merged": "/Users/huanghaijie/Documents/Work/Hankkin/ITRound/leancloudchatkit/build/intermediates/res/merged/debug/drawable/lcim_bottom_bar_action_button_bg.xml",
         "source": "/Users/huanghaijie/Documents/Work/Hankkin/ITRound/leancloudchatkit/src/main/res/drawable/lcim_bottom_bar_action_button_bg.xml"
+    },
+    {
+        "merged": "/Users/huanghaijie/Documents/Work/Hankkin/ITRound/leancloudchatkit/build/intermediates/res/merged/debug/drawable/abc_list_selector_background_transition_holo_dark.xml",
+        "source": "/Users/huanghaijie/.android/build-cache/7e117c7a2913b46d3c3b643fbbf406438290ecd5/output/res/drawable/abc_list_selector_background_transition_holo_dark.xml"
     },
     {
         "merged": "/Users/huanghaijie/Documents/Work/Hankkin/ITRound/leancloudchatkit/build/intermediates/res/merged/debug/drawable/abc_btn_default_mtrl_shape.xml",

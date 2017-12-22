@@ -25,6 +25,7 @@ import java.util.concurrent.TimeUnit;
  * Blog: http://hankkin.cn
  * Mail: 1019283569@qq.com
  */
+@AVClassName("UserBean")
 public class UserBean extends AVUser {
 
     public static final int BOY = 0;
@@ -217,7 +218,7 @@ public class UserBean extends AVUser {
     }
 
     public int getSex() {
-        return sex;
+        return (int) get("sex");
     }
 
     public void setSex(int sex) {
