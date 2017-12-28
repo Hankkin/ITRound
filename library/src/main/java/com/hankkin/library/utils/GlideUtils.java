@@ -1,7 +1,9 @@
 package com.hankkin.library.utils;
 
 import android.content.Context;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
@@ -9,6 +11,8 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.target.Target;
+import com.hankkin.library.R;
 
 public class GlideUtils {
 
@@ -132,6 +136,34 @@ public class GlideUtils {
     public static void GuideClearMemory(Context mContext) {
         //清理内存缓存  可以在UI主线程中进行
         Glide.get(mContext).clearMemory();
+    }
+
+    //加载网络图片并设置大小
+    public static void loadImageViewAnim(final Context context, String url, final ImageView imageView, int width, int height, final ProgressBar progressBar) {
+        Glide
+                .with(context)
+                .load(url)
+                .listener(new RequestListener<String, GlideDrawable>() {
+                    @Override
+                    public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                        if (progressBar !=null){
+                            progressBar.setVisibility(View.GONE);
+                        }
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                        if (progressBar !=null){
+                            progressBar.setVisibility(View.GONE);
+                        }
+                        return false;
+                    }
+                })
+                .centerCrop()
+                .override(width, height)
+                .crossFade()
+                .into(imageView);
     }
 
 }

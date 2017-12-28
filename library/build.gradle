@@ -21,6 +21,7 @@ android {
     }
 }
 
+
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
@@ -43,6 +44,7 @@ dependencies {
     compile rootProject.ext.dependencies["rxrelay"]
     compile rootProject.ext.dependencies["rxpermissions"]
     compile rootProject.ext.dependencies["circleimageview"]
+    compile rootProject.ext.dependencies["SpinKit"]
     compile('com.github.afollestad.material-dialogs:core:0.8.5.8@aar') {
         transitive = true
     }

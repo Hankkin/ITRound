@@ -97,12 +97,6 @@ public class HomeContentFragment extends MvpFragment<HomeContentView,HomeContent
 
         getPresenter().getGankHttp(Constant.REFRESH,HomeFragment.HOME_TAG[index],page);
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-
-            }
-        }).start();
     }
 
     public void operateBus(){

@@ -1,9 +1,12 @@
 package com.hankkin.itround.ui.me;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.Button;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.hankkin.itround.R;
 import com.hankkin.itround.manage.UserManager;
 import com.hankkin.itround.ui.LoginActivity;
@@ -41,7 +44,17 @@ public class SettingActivity extends BaseAcitvity implements View.OnClickListene
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.btn_set_logout:
-                logout();
+                new MaterialDialog.Builder(activity)
+                        .onPositive(new MaterialDialog.SingleButtonCallback() {
+                            @Override
+                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                logout();
+                            }
+                        })
+                        .content(getResources().getString(R.string.alter_logout_content))
+                        .positiveText(R.string.ok)
+                        .negativeText(R.string.cancel)
+                        .show();
                 break;
                 default:
                     break;

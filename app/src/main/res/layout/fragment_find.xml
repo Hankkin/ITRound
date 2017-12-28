@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.hankkin.itround.widget.MySwipeRefreshLayout
-    android:id="@+id/refresh"
+<com.hankkin.itround.widget.MySwipeRefreshLayout android:id="@+id/refresh"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fab="http://schemas.android.com/tools">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -13,6 +13,7 @@
 
 
         <com.hankkin.itround.widget.GradationScrollView
+            android:fillViewport="true"
             android:background="@color/grey"
             android:id="@+id/scrollView"
             android:layout_width="match_parent"
@@ -34,32 +35,39 @@
                 <LinearLayout
                     android:orientation="vertical"
                     android:layout_width="match_parent"
-                    android:layout_height="1000dp">
+                    android:layout_height="wrap_content">
                     <TextView
                         android:background="@color/white"
                         android:padding="@dimen/dp_12"
                         android:drawableRight="@mipmap/triangle"
                         android:drawablePadding="@dimen/dp_10"
-                        android:drawableLeft="@mipmap/icon_find_users"
-                        android:text="@string/find_new_friend"
+                        android:drawableLeft="@mipmap/icon_cir_fire"
+                        android:text="@string/circle_fire"
                         style="@style/blacktext_small"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>
-                    <com.gigamole.infinitecycleviewpager.HorizontalInfiniteCycleViewPager
-                        android:background="@color/white"
-                        android:id="@+id/hicvp"
-                        android:layout_width="match_parent"
-                        android:layout_height="200dp"
-                        app:icvp_interpolator="@android:anim/accelerate_decelerate_interpolator"
-                        app:icvp_scroll_duration="250"
-                        app:icvp_min_page_scale_offset="5dp"
-                        app:icvp_max_page_scale="0.8"
-                        app:icvp_min_page_scale="0.4"
-                        app:icvp_medium_scaled="false">
 
-                    </com.gigamole.infinitecycleviewpager.HorizontalInfiniteCycleViewPager>
-                    
+                    <android.support.v7.widget.RecyclerView
+                        android:padding="@dimen/dp_10"
+                        android:background="@color/white"
+                        android:id="@+id/rv_users"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+
                 </LinearLayout>
+                <RelativeLayout
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:descendantFocusability="blocksDescendants"
+                    android:id="@+id/empty_find"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/rv_find"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"/>
+
+                </RelativeLayout>
             </LinearLayout>
 
         </com.hankkin.itround.widget.GradationScrollView>
@@ -90,5 +98,17 @@
         </LinearLayout>
 
 
+        <com.github.clans.fab.FloatingActionButton
+            app:fab_colorNormal="@color/white"
+            android:id="@+id/fab_find_add"
+            android:src="@mipmap/fab_camera"
+            app:menu_fab_size="mini"
+            fab:menu_colorNormal="@color/white"
+            android:layout_marginRight="@dimen/dp_14"
+            android:layout_marginBottom="@dimen/dp_14"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
     </RelativeLayout>
 </com.hankkin.itround.widget.MySwipeRefreshLayout>

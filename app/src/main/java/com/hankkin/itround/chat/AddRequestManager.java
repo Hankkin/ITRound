@@ -172,9 +172,9 @@ public class AddRequestManager {
 
       @Override
       protected void onSucceed() {
-        PushManager.getInstance().pushMessage(user.getObjectId(), ctx.getString(R.string.push_add_request),
+        PushManager.getInstance().pushMessage(user.getObjectId(), ctx.getString(R.string.toast_push_add_request),
           Constant.INVITATION_ACTION);
-        ToastUtils.showShortToast(R.string.contact_sendRequestSucceed);
+        ToastUtils.showShortToast(R.string.toast_contact_sendRequestSucceed);
       }
     }.execute();
   }

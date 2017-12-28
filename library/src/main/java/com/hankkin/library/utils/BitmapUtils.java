@@ -29,7 +29,7 @@ public class BitmapUtils {
     public static Bitmap drawable2Bitmap(Drawable drawable) {
         if (drawable instanceof BitmapDrawable) {
             return ((BitmapDrawable) drawable).getBitmap();
-        } else if (drawable instanceof NinePatchDrawable) {
+        } else {
             Bitmap bitmap = Bitmap
                     .createBitmap(
                             drawable.getIntrinsicWidth(),
@@ -41,8 +41,6 @@ public class BitmapUtils {
                     drawable.getIntrinsicHeight());
             drawable.draw(canvas);
             return bitmap;
-        } else {
-            return null;
         }
     }
 

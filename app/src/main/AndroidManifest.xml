@@ -37,13 +37,12 @@
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
         </receiver>
-
         <receiver android:name=".chat.LeanchatReceiver">
             <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED"/>
-                <action android:name="android.intent.action.USER_PRESENT"/>
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
-                <action android:name="com.avoscloud.chat.INVITATION_ACTION"/>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.USER_PRESENT" />
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+                <action android:name="com.avoscloud.chat.INVITATION_ACTION" />
             </intent-filter>
         </receiver>
 
@@ -71,7 +70,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".ui.circle.NewFriendActivity" />
-        <activity android:name=".ui.me.SettingActivity"></activity>
+        <activity android:name=".ui.me.SettingActivity" />
+        <activity android:name=".ui.circle.AddNewsActivity"
+            android:windowSoftInputMode="adjustResize"></activity>
     </application>
 
 </manifest>

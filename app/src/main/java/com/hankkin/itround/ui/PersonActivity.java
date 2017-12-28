@@ -20,9 +20,12 @@ import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVQuery;
 import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.FindCallback;
+import com.avos.avoscloud.SaveCallback;
 import com.hankkin.itround.R;
 import com.hankkin.itround.bean.UserBean;
+import com.hankkin.itround.callback.QueryFollowCallBack;
 import com.hankkin.itround.chat.AddRequestManager;
+import com.hankkin.itround.chat.FriendsManager;
 import com.hankkin.itround.chat.UserCacheUtils;
 import com.hankkin.itround.core.person.PersonPresenter;
 import com.hankkin.itround.core.person.PersonView;
@@ -33,6 +36,7 @@ import com.hankkin.library.rx.RxBus;
 import com.hankkin.library.utils.BitmapUtils;
 import com.hankkin.library.utils.FileUtils;
 import com.hankkin.library.utils.GlideUtils;
+import com.hankkin.library.utils.LogUtils;
 import com.hankkin.library.utils.ToastUtils;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.tbruyelle.rxpermissions2.Permission;
@@ -123,14 +127,28 @@ public class PersonActivity extends MvpActivity<PersonView, PersonPresenter> imp
         isCurrent = getIntent().getBooleanExtra(CURRENT,false);
         userBean = (UserBean) getIntent().getSerializableExtra("user");
         uid = getIntent().getStringExtra("id");
-        currentUser = UserCacheUtils.getCachedUser(UserBean.getCurrentUserId());
+        currentUser = UserBean.getCurrentUser();
+        LogUtils.e(getClass().getName(),currentUser.getFollowers()+"");
+
     }
 
     @Override
     protected void initData() {
         if (!isCurrent){
+            showProgress();
             userBean = UserCacheUtils.getCachedUser(uid);
-            setViews(userBean);
+            UserManager.getUserFollow(userBean, new QueryFollowCallBack() {
+                @Override
+                public void querySuc(UserBean userBean1) {
+                    userBean = userBean1;
+                    setViews(userBean);
+                }
+
+                @Override
+                public void quetFail(String msg) {
+                    hideProgress();
+                }
+            });
         }
         else {
             setViews(currentUser);
@@ -175,9 +193,16 @@ public class PersonActivity extends MvpActivity<PersonView, PersonPresenter> imp
         if (requestCode == REQUEST_CODE_CHOOSE && resultCode == RESULT_OK) {
             showProgress();
             mSelected = Matisse.obtainResult(data);
-            Bitmap bitmap = BitmapUtils.getBitmapFromUri(mSelected.get(0), activity);
             filePath = FileUtils.getRealFilePath(activity, mSelected.get(0));
-            getPresenter().updateIcon(bitmap);
+            final UserBean userBean = UserBean.getCurrentUser();
+            userBean.saveAvatar(filePath, new SaveCallback() {
+                @Override
+                public void done(AVException e) {
+                    filterException(e);
+                    setViews(userBean);
+                    RxBus.getDefault().post(new EventMap.UpdateUserEvent());
+                }
+            });
         }
     }
 
@@ -213,31 +238,16 @@ public class PersonActivity extends MvpActivity<PersonView, PersonPresenter> imp
         } else {
             btnAddFriend.setVisibility(View.VISIBLE);
             currentUser = UserCacheUtils.getCachedUser(userBean.getObjectId());
-            final List<String> friends = new ArrayList<>();
-
-            AVQuery<AVUser> query = new AVQuery<>("_User");
-            query.findInBackground(new FindCallback<AVUser>() {
-                @Override
-                public void done(List<AVUser> list, AVException e) {
-                    if (e == null) {
-                        for (AVUser user : list) {
-                            friends.add(user.getObjectId());
-                        }
-                        hideProgress();
-
-                    } else {
-                       ToastUtils.showShortToast(e.getMessage());
-                       hideProgress();
-                    }
-                }
-            });
-
-            if (friends.contains(userBean.getObjectId())) {
+            List<String> friendIds = new ArrayList<String>(FriendsManager.getFriendIds());
+            final UserBean user = UserBean.getCurrentUser();
+            friendIds.add(user.getObjectId());
+            if (friendIds.contains(userBean.getObjectId())) {
                 btnAddFriend.setText(getResources().getString(R.string.send_sms));
             } else {
-                btnAddFriend.setText(getResources().getString(R.string.add_friend));
+                btnAddFriend.setText(getResources().getString(R.string.cirle_add_friend));
             }
         }
+        hideProgress();
 
     }
 
@@ -333,7 +343,7 @@ public class PersonActivity extends MvpActivity<PersonView, PersonPresenter> imp
                 showInputDialog(DESC);
                 break;
             case R.id.btn_person_add_friend:
-                if (getResources().getString(R.string.add_friend).equals(btnAddFriend.getText().toString())) {
+                if (getResources().getString(R.string.cirle_add_friend).equals(btnAddFriend.getText().toString())) {
                     AddRequestManager.getInstance().createAddRequestInBackground(this, currentUser);
                 } else {
                     Intent intent = new Intent(activity, LCIMConversationActivity.class);

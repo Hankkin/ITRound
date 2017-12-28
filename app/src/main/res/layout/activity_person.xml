@@ -26,7 +26,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <de.hdodenhof.circleimageview.CircleImageView
-                    android:src="@mipmap/ic_launcher"
+                    android:src="@mipmap/icon_user_default"
                     android:id="@+id/iv_person"
                     app:civ_border_width="1dp"
                     app:civ_border_color="@color/colorPrimary"
@@ -88,7 +88,7 @@
                         <TextView
                             android:textSize="@dimen/sp_14"
                             android:layout_marginLeft="@dimen/dp_2"
-                            android:text="@string/person_star"
+                            android:text="@string/person_follow"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"/>
                     </LinearLayout>
@@ -254,7 +254,7 @@
                 android:visibility="gone"
                 android:id="@+id/btn_person_add_friend"
                 android:layout_marginTop="60dp"
-                android:text="@string/add_friend"
+                android:text="@string/cirle_add_friend"
                 style="@style/white_text"
                 android:background="@drawable/bg_colorprimary_cir"
                 android:layout_gravity="center_horizontal"

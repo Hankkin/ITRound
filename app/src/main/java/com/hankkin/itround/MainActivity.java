@@ -108,8 +108,8 @@ public class MainActivity extends AppCompatActivity {
         BottomNavigationViewHelper.disableShiftMode(navigation);
 
         homeFragment = HomeFragment.newInstance(0);
-        findFragment = FindFragment.newInstance(1);
-        circleFragment = CircleFragment.newInstance(2);
+        findFragment = FindFragment.newInstance(2);
+        circleFragment = CircleFragment.newInstance(1);
         meFragment = MeFragment.newInstance(3);
         List<Fragment> fragments = new ArrayList<>();
         fragments.add(homeFragment);

@@ -1,8 +1,10 @@
 package com.hankkin.itround.manage;
 
 import com.avos.avoscloud.AVException;
+import com.avos.avoscloud.AVObject;
 import com.avos.avoscloud.AVQuery;
 import com.avos.avoscloud.AVUser;
+import com.avos.avoscloud.CountCallback;
 import com.avos.avoscloud.FindCallback;
 import com.avos.avoscloud.GetCallback;
 import com.avos.avoscloud.im.v2.AVIMClient;
@@ -11,6 +13,7 @@ import com.avos.avoscloud.im.v2.callback.AVIMClientCallback;
 import com.hankkin.itround.Constant;
 import com.hankkin.itround.bean.UserBean;
 import com.hankkin.itround.callback.FindUsersCallBack;
+import com.hankkin.itround.callback.QueryFollowCallBack;
 import com.hankkin.itround.chat.PushManager;
 import com.hankkin.library.utils.Utils;
 
@@ -66,6 +69,35 @@ public class UserManager {
             @Override
             public void done(UserBean user, AVException e) {
                 callback.done(user, e);
+            }
+        });
+    }
+
+    public static void getUserFollow(final UserBean avUser, final QueryFollowCallBack callBack){
+        final AVQuery<AVObject> query = new AVQuery<>(Constant.FOLLOWEE);
+        query.countInBackground(new CountCallback() {
+            @Override
+            public void done(int i, AVException e) {
+                if (e == null)
+                {
+                    avUser.setStars(i);
+                    AVQuery<AVObject> query1 = new AVQuery<>(Constant.FOLLOWER);
+                    query1.countInBackground(new CountCallback() {
+                        @Override
+                        public void done(int i, AVException e) {
+                            if (e == null){
+                                avUser.setFollowers(i);
+                                callBack.querySuc(avUser);
+                            }
+                            else {
+                                callBack.quetFail(e.getMessage());
+                            }
+                        }
+                    });
+                }
+                else {
+                    callBack.quetFail(e.getMessage());
+                }
             }
         });
     }

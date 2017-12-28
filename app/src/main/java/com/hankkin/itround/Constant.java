@@ -20,6 +20,9 @@ public class Constant {
     public static final String GANK = "gank";
     public static final String USER_ID = "user_id";
     public static final String OBJECT_ID = "objectId";
+    public static final String FOLLOWEE = "_Followee";
+    public static final String FOLLOWER = "_Follower";
+    public static final String FINDNEWSBEAN = "FindNewsBean";
     public static final String INVITATION_ACTION = "invitation_action";
     public static final String NOTOFICATION_TAG = getPrefixConstant("notification_tag");
     public static final String NOTIFICATION_SYSTEM = Constant.getPrefixConstant("notification_system_chat");

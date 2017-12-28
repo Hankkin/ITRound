@@ -208,7 +208,7 @@ public class UserBean extends AVUser {
 
     public String getName() {
         if (TextUtils.isEmpty(name)){
-            return getUsername();
+            return getUsername().substring(0,3)+"***"+getUsername().substring(getUsername().length()-4,getUsername().length());
         }
         return name;
     }

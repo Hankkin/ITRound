@@ -109,7 +109,7 @@ public class MeFragment extends BaseFragment implements SwipeRefreshLayout.OnRef
         if (UserManager.isLogin()){
             if (user != null){
                 if (!TextUtils.isEmpty(user.getAvatarUrl())){
-                    GlideUtils.loadImageView(getActivity().getApplicationContext(),user.getAvatarUrl(),mHeadImage);
+                    GlideUtils.loadImageView(activity,user.getAvatarUrl(),mHeadImage);
                 }
                 if (!TextUtils.isEmpty(user.getName())){
                     tvTitle.setText(user.getName());

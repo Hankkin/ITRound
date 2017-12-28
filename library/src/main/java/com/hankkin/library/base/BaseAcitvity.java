@@ -175,7 +175,7 @@ public abstract class BaseAcitvity extends AppCompatActivity implements BaseView
 
     protected void initSwipe(SwipeRefreshLayout refreshLayout, SwipeRefreshLayout.OnRefreshListener listener){
         refreshLayout.setOnRefreshListener(listener);
-        refreshLayout.setColorSchemeColors(Color.rgb(253, 119, 34));
+        refreshLayout.setColorSchemeColors(Color.rgb(24, 166, 94));
         refreshLayout.setRefreshing(true);
     }
 

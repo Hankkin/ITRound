@@ -60,16 +60,36 @@
     <string name="post_gank_type">请选择干货类型</string>
 
     <string name="circle_search">圈子</string>
-    <string name="add_friend">加好友</string>
+    <string name="circle_fire">热门推荐</string>
+    <string name="cirle_add_friend">加好友</string>
+    <string name="cirle_add_news_content_hint">晒技术、晒有趣、晒生活！</string>
+    <string name="cirle_add_news_content_not_empty">请输入动态内容哦...</string>
+    <string name="circle_add_news_title">新建动态</string>
+    <string name="circle_add_news_select_tag_hint">请选择分类</string>
+    <string name="circle_add_news_content_limit">最多可输入500字符</string>
     <string name="send_sms">发消息</string>
     <string name="circle_search_hint">请输入要搜索的联系人</string>
     <string name="ok">确定</string>
     <string name="cancel">取消</string>
     <string name="agree">通过</string>
     <string name="agreed">已通过</string>
-    <string name="other_device">您的账号在其他设备上登录，请尽快修改您的密码</string>
-    <string name="push_add_request">您有新的好友申请</string>
-    <string name="message_when_agree_request">我们已经是好友了，来聊天吧</string>
-    <string name="contact_sendRequestSucceed">发送请求成功，等待对方验证</string>
+
+    <string name="toast_other_device">您的账号在其他设备上登录，请尽快修改您的密码</string>
+    <string name="toast_push_add_request">您有新的好友申请</string>
+    <string name="toast_message_when_agree_request">我们已经是好友了，来聊天吧</string>
+    <string name="toast_contact_sendRequestSucceed">发送请求成功，等待对方验证</string>
+    <string name="toast_add_news_suc">发布成功...</string>
+
+
+    <string name="alter_logout_content">退出账号将收不到推送消息,您确定要退出当前账号吗?</string>
+    <string name="alter_delete_friend_sms">是否删除该好友请求?</string>
+
+
+    <string-array name="addNewsTags">
+        <item>生活</item>
+        <item>技术圈</item>
+        <item>有趣</item>
+        <item>搞基</item>
+    </string-array>
 
 </resources>

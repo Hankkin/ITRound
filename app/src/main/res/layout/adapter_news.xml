@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:padding="@dimen/dp_10"
+    android:background="@color/white"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/iv_adapter_news_user_icon"
+            android:src="@mipmap/icon_user_default"
+            android:layout_width="50dp"
+            android:layout_height="50dp" />
+        <TextView
+            style="@style/black_text"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:layout_toRightOf="@+id/iv_adapter_news_user_icon"
+            android:layout_centerVertical="true"
+            android:id="@+id/tv_adapter_news_user_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_marginLeft="@dimen/dp_10"
+            android:id="@+id/tv_adapter_news_time"
+            android:textSize="@dimen/sp_14"
+            android:text="2018"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+    <TextView
+        android:layout_marginTop="@dimen/dp_10"
+        android:textColor="@color/add_news_tag"
+        android:layout_centerInParent="true"
+        android:id="@+id/tv_adapter_news_tag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:layout_marginTop="@dimen/dp_6"
+        style="@style/black_text"
+        android:id="@+id/tv_adapter_news_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <com.hankkin.library.view.imgwatch.MessagePicturesLayout
+        android:id="@+id/l_pictures"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/dp_2"/>
+
+
+</LinearLayout>

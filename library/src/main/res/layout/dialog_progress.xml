@@ -14,7 +14,6 @@
             android:gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/bg_white_cir"
             android:orientation="vertical"
             android:paddingLeft="8dp"
             android:paddingRight="8dp"
@@ -22,11 +21,14 @@
             android:paddingBottom="8dp">
 
 
-            <com.hankkin.library.view.ProgressBar
+            <com.github.ybq.android.spinkit.SpinKitView
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/spin_kit"
+                style="@style/SpinKitView.RotatingCircle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:background="@color/colorPrimary" />
+                app:SpinKit_Color="@color/colorPrimary" />
 
         </LinearLayout>
     </FrameLayout>

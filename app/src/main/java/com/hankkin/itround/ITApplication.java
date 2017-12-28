@@ -1,9 +1,12 @@
 package com.hankkin.itround;
 
 import android.app.Application;
+import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
+import android.widget.ImageView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -12,6 +15,7 @@ import com.avos.avoscloud.AVObject;
 import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.im.v2.AVIMClient;
 import com.avos.avoscloud.im.v2.AVIMClientEventHandler;
+import com.hankkin.itround.bean.FinsNewsBean;
 import com.hankkin.itround.bean.UserBean;
 import com.hankkin.itround.chat.AddRequest;
 import com.hankkin.itround.chat.LeanchatUserProvider;
@@ -19,6 +23,7 @@ import com.hankkin.itround.chat.PushManager;
 import com.hankkin.itround.greendao.dao.DaoMaster;
 import com.hankkin.itround.greendao.dao.DaoSession;
 import com.hankkin.itround.ui.LoginActivity;
+import com.hankkin.library.utils.GlideUtils;
 import com.hankkin.library.utils.Utils;
 
 import cn.leancloud.chatkit.LCChatKit;
@@ -45,6 +50,7 @@ public class ITApplication extends Application {
         AVUser.registerSubclass(UserBean.class);
 
         AVObject.registerSubclass(AddRequest.class);
+        AVObject.registerSubclass(FinsNewsBean.class);
 
         //初始化LeanCloud
         AVOSCloud.initialize(this,Constant.CLOUD_APP_ID,Constant.CLOUD_APP_Key);
@@ -81,7 +87,7 @@ public class ITApplication extends Application {
                                     startActivity(intent);
                                 }
                             })
-                            .content(getResources().getString(R.string.other_device))
+                            .content(getResources().getString(R.string.toast_other_device))
                             .positiveText(R.string.ok)
                             .show();
                 }

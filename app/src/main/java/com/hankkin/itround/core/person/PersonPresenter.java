@@ -57,28 +57,4 @@ public class PersonPresenter extends BasePresent<PersonView> {
         });
 
     }
-
-    public void updateIcon(final Bitmap bitmap){
-        if (bitmap == null){
-            return;
-        }
-         final Map<String, Object> headImage = new HashMap<>();
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
-        final AVFile file = new AVFile("icon.png", baos.toByteArray());
-        file.saveInBackground(new SaveCallback() {
-            @Override
-            public void done(AVException e) {
-                if (e == null) {
-                    headImage.put("__type", "File");
-                    headImage.put("name", file.getOriginalName());
-                    headImage.put("objectId", file.getObjectId());
-                    headImage.put("url", file.getUrl());
-                    updateUserHttp("headerImage",headImage);
-                } else {
-                    getView().toast(e.getMessage());
-                }
-            }
-        });
-    }
 }

@@ -10,6 +10,8 @@ import com.avos.avoscloud.im.v2.callback.AVIMClientCallback;
 import com.hankkin.itround.MainActivity;
 import com.hankkin.itround.R;
 import com.hankkin.itround.bean.UserBean;
+import com.hankkin.itround.callback.QueryFollowCallBack;
+import com.hankkin.itround.chat.UserCacheUtils;
 import com.hankkin.itround.manage.UserManager;
 import com.hankkin.library.base.BaseAcitvity;
 import com.hankkin.library.utils.LogUtils;
@@ -52,16 +54,29 @@ public class SplashActivity extends BaseAcitvity {
 
     private void imLogin() {
         UserBean.getCurrentUser().updateUserInfo();
-        LogUtils.e(TAG,UserBean.getCurrentUserId());
-        LCChatKit.getInstance().open(UserBean.getCurrentUserId(), new AVIMClientCallback() {
+        UserManager.getUserFollow(UserBean.getCurrentUser(), new QueryFollowCallBack() {
             @Override
-            public void done(AVIMClient avimClient, AVIMException e) {
-                if (filterException(e)) {
-                    Intent intent = new Intent(SplashActivity.this, MainActivity.class);
-                    startActivity(intent);
-                    finish();
-                }
+            public void querySuc(UserBean userBean) {
+                UserBean.changeCurrentUser(userBean,true);
+                UserCacheUtils.cacheUser(userBean);
+                UserBean.changeCurrentUser(userBean,true);
+                LCChatKit.getInstance().open(UserBean.getCurrentUserId(), new AVIMClientCallback() {
+                    @Override
+                    public void done(AVIMClient avimClient, AVIMException e) {
+                        if (filterException(e)) {
+                            Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+                            startActivity(intent);
+                            finish();
+                        }
+                    }
+                });
+            }
+
+            @Override
+            public void quetFail(String msg) {
+
             }
         });
+
     }
 }

@@ -1,5 +1,6 @@
 package com.hankkin.itround.ui.circle;
 
+import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -9,7 +10,10 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.avos.avoscloud.AVException;
+import com.avos.avoscloud.DeleteCallback;
 import com.avos.avoscloud.FindCallback;
 import com.avos.avoscloud.SaveCallback;
 import com.avos.avoscloud.im.v2.AVIMConversation;
@@ -64,6 +68,29 @@ public class NewFriendActivity extends BaseAcitvity implements SwipeRefreshLayou
         rv.setAdapter(adapter);
         adapter.setLoadMoreView(new CustomLoadMoreView());
         adapter.setOnLoadMoreListener(this,rv);
+
+        adapter.setOnItemLongClickListener(new BaseQuickAdapter.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(BaseQuickAdapter adapter, View view, int position) {
+                new MaterialDialog.Builder(activity)
+                        .onPositive(new MaterialDialog.SingleButtonCallback() {
+                            @Override
+                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                new AddRequest().deleteInBackground(new DeleteCallback() {
+                                    @Override
+                                    public void done(AVException e) {
+                                        loadMoreAddRequest(true);
+                                    }
+                                });
+                            }
+                        })
+                        .content(getResources().getString(R.string.alter_delete_friend_sms))
+                        .positiveText(R.string.ok)
+                        .negativeText(R.string.cancel)
+                        .show();
+                return false;
+            }
+        });
     }
 
     @Override
@@ -180,7 +207,7 @@ public class NewFriendActivity extends BaseAcitvity implements SwipeRefreshLayou
             public void done(AVIMConversation avimConversation, AVIMException e) {
                 if (e == null) {
                     AVIMTextMessage message = new AVIMTextMessage();
-                    message.setText(getString(R.string.message_when_agree_request));
+                    message.setText(getString(R.string.toast_message_when_agree_request));
                     avimConversation.sendMessage(message, null);
                 }
             }

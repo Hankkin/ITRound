@@ -18,7 +18,9 @@ public class ProgressBar extends CustomView {
 
 	final static String ANDROIDXML = "http://schemas.android.com/apk/res/android";
 
-	int backgroundColor = Color.parseColor("#fd7722");
+	int backgroundColor = Color.parseColor("#18a65e");
+
+
 
 	public ProgressBar(Context context, AttributeSet attrs) {
 		super(context, attrs);

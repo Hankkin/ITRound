@@ -102,7 +102,7 @@ public class WaveSideBarView extends View {
         mLetters = Arrays.asList(context.getResources().getStringArray(R.array.waveSideBarLetters));
 
         mTextColor = Color.parseColor("#969696");
-        mWaveColor = Color.parseColor("#befd7722");
+        mWaveColor = Color.parseColor("#be18a65e");
         mTextColorChoose = context.getResources().getColor(android.R.color.white);
         mTextSize = context.getResources().getDimensionPixelSize(R.dimen.textSize_sidebar);
         mLargeTextSize = context.getResources().getDimensionPixelSize(R.dimen.large_textSize_sidebar);
